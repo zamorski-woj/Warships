@@ -58,7 +58,7 @@
 
             if (ship.length < 1)
             {
-                return false;
+                throw new ArgumentOutOfRangeException("Lenght shoud be positive");
             }
             switch (ship.heading)
             {
@@ -70,7 +70,6 @@
                             return false;
                         }
                     }
-
                     break;
                 case Direction.East:
                     for (int i = 0; i < ship.length; i++)
@@ -80,7 +79,6 @@
                             return false;
                         }
                     }
-
                     break;
                 case Direction.South:
                     for (int i = 0; i < ship.length; i++)
@@ -90,7 +88,6 @@
                             return false;
                         }
                     }
-
                     break;
                 case Direction.West:
                     for (int i = 0; i < ship.length; i++)
@@ -100,10 +97,8 @@
                             return false;
                         }
                     }
-
                     break;
             }
-
             return true;
         }
 
@@ -131,10 +126,41 @@
         {
             if(CanPlaceShip(map, ship))
             {
+                int xCoordinate = ship.mainCoordinate.Item1;
+                int yCoordinate = ship.mainCoordinate.Item2;
 
+
+                switch (ship.heading)
+                {
+                    case Direction.North:
+                        for (int i = 0; i < ship.length; i++)
+                        {
+                            map[xCoordinate, yCoordinate + i] = CellType.Ship;
+                        }
+                        break;
+                    case Direction.East:
+                        for (int i = 0; i < ship.length; i++)
+                        {
+                            map[xCoordinate+i, yCoordinate] = CellType.Ship;
+
+                        }
+                        break;
+                    case Direction.South:
+                        for (int i = 0; i < ship.length; i++)
+                        {
+                            map[xCoordinate, yCoordinate - i] = CellType.Ship;
+
+                        }
+                        break;
+                    case Direction.West:
+                        for (int i = 0; i < ship.length; i++)
+                        {
+                            map[xCoordinate-i, yCoordinate] = CellType.Ship;
+                        }
+                        break;
+                }
             }
 
-            throw new NotImplementedException();
         }
 
     }

@@ -44,11 +44,10 @@ namespace TestWarships
             Ship ship = new(length, direction, new Tuple<int, int>(x, y));
             CanPlaceShip(bothMaps.Item1, ship).Should().BeTrue();
             PlaceShip(bothMaps.Item1, ship);
-            CanPlaceShip(bothMaps.Item2, ship).Should().BeFalse();
+            CanPlaceShip(bothMaps.Item1, ship).Should().BeFalse();
         }  
 
         [Theory]
-        [InlineData(0, 0, Direction.South, -2)]
         [InlineData(0, 0, Direction.South, 2)]
         [InlineData(0, 4, Direction.East, 7)]
         [InlineData(11, 3, Direction.North, 1)]
