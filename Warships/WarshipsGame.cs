@@ -53,53 +53,26 @@
 
         public static bool CanPlaceShip(CellType[,] map, Ship ship)
         {
-            int xCoordinate = ship.mainCoordinate.Item1;
-            int yCoordinate = ship.mainCoordinate.Item2;
 
             if (ship.length < 1)
             {
                 throw new ArgumentOutOfRangeException("Lenght shoud be positive");
             }
-            switch (ship.heading)
+            List<Tuple<int, int>> shipCoordinates = ship.GetCoordinates();
+
+            foreach (var coord in shipCoordinates)
             {
-                case Direction.North:
-                    for (int i = 0; i < ship.length; i++)
-                    {
-                        if (Occupied(map, xCoordinate, yCoordinate + i))
-                        {
-                            return false;
-                        }
-                    }
-                    break;
-                case Direction.East:
-                    for (int i = 0; i < ship.length; i++)
-                    {
-                        if (Occupied(map, xCoordinate + i, yCoordinate))
-                        {
-                            return false;
-                        }
-                    }
-                    break;
-                case Direction.South:
-                    for (int i = 0; i < ship.length; i++)
-                    {
-                        if (Occupied(map, xCoordinate, yCoordinate - i))
-                        {
-                            return false;
-                        }
-                    }
-                    break;
-                case Direction.West:
-                    for (int i = 0; i < ship.length; i++)
-                    {
-                        if (Occupied(map, xCoordinate - i, yCoordinate))
-                        {
-                            return false;
-                        }
-                    }
-                    break;
+                if (Occupied(map, coord))
+                {
+                    return false;
+                }
             }
             return true;
+        }
+
+        private static bool Occupied(CellType[,] map, Tuple<int, int> coord)
+        {
+            return Occupied(map, coord.Item1, coord.Item2);
         }
 
         private static bool Occupied(CellType[,] map, int xCoordinate, int yCoordinate)
@@ -124,40 +97,13 @@
 
         public static void PlaceShip(CellType[,] map, Ship ship)
         {
-            if(CanPlaceShip(map, ship))
+            if (CanPlaceShip(map, ship))
             {
-                int xCoordinate = ship.mainCoordinate.Item1;
-                int yCoordinate = ship.mainCoordinate.Item2;
+                List<Tuple<int, int>> shipCoordinates = ship.GetCoordinates();
 
-
-                switch (ship.heading)
+                foreach (var coord in shipCoordinates)
                 {
-                    case Direction.North:
-                        for (int i = 0; i < ship.length; i++)
-                        {
-                            map[xCoordinate, yCoordinate + i] = CellType.Ship;
-                        }
-                        break;
-                    case Direction.East:
-                        for (int i = 0; i < ship.length; i++)
-                        {
-                            map[xCoordinate+i, yCoordinate] = CellType.Ship;
-
-                        }
-                        break;
-                    case Direction.South:
-                        for (int i = 0; i < ship.length; i++)
-                        {
-                            map[xCoordinate, yCoordinate - i] = CellType.Ship;
-
-                        }
-                        break;
-                    case Direction.West:
-                        for (int i = 0; i < ship.length; i++)
-                        {
-                            map[xCoordinate-i, yCoordinate] = CellType.Ship;
-                        }
-                        break;
+                    map[coord.Item1, coord.Item2] = CellType.Ship;
                 }
             }
 

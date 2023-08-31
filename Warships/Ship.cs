@@ -1,4 +1,5 @@
-﻿using static Warships.WarshipsGame;
+﻿using System.Collections.Generic;
+using static Warships.WarshipsGame;
 
 
 namespace Warships
@@ -9,14 +10,14 @@ namespace Warships
         public Direction heading;
         public Tuple<int, int> mainCoordinate;
         public bool sunken = false;
-        
+
         public Ship(int length, Direction heading, Tuple<int, int> mainCoordinate)//manually
         {
             this.length = length;
             this.heading = heading;
             this.mainCoordinate = mainCoordinate;
         }
-        
+
         public Ship(CellType[,] map, int length)//Randomize
         {
             this.length = length;
@@ -37,6 +38,43 @@ namespace Warships
             PlaceShip(map, this);
         }
 
-        
+        public List<Tuple<int, int>> GetCoordinates()
+        {
+            List<Tuple<int, int>> allCoordinates = new();
+            int xCoordinate = this.mainCoordinate.Item1, yCoordinate = this.mainCoordinate.Item2;
+            switch (this.heading)
+            {
+                case Direction.North:
+                    for (int i = 0; i < this.length; i++)
+                    {
+                        allCoordinates.Add(new Tuple<int, int>(xCoordinate, yCoordinate + i));
+
+                    }
+                    break;
+                case Direction.East:
+                    for (int i = 0; i < this.length; i++)
+                    {
+                        allCoordinates.Add(new Tuple<int, int>(xCoordinate+i, yCoordinate));
+
+                    }
+                    break;
+                case Direction.South:
+                    for (int i = 0; i < this.length; i++)
+                    {
+                        allCoordinates.Add(new Tuple<int, int>(xCoordinate, yCoordinate - i));
+
+                    }
+                    break;
+                case Direction.West:
+                    for (int i = 0; i < this.length; i++)
+                    {
+                        allCoordinates.Add(new Tuple<int, int>(xCoordinate - i, yCoordinate));
+
+                    }
+                    break;
+            }
+            return allCoordinates;
+        }
     }
 }
+
