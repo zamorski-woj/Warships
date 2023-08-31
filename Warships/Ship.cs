@@ -75,6 +75,16 @@ namespace Warships
             }
             return allCoordinates;
         }
+
+        public void Destroy(CellType[,] map)
+        {
+            var coordinates = this.GetCoordinates();
+            foreach(var coordinate in coordinates)
+            {
+                map[coordinate.Item1, coordinate.Item2] = CellType.Sunken; 
+            }
+            this.sunken = true;
+        }
     }
 }
 

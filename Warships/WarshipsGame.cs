@@ -69,13 +69,13 @@
             }
             return true;
         }
-
-        private static bool Occupied(CellType[,] map, Tuple<int, int> coord)
+        
+        public static bool Occupied(CellType[,] map, Tuple<int, int> coord)
         {
             return Occupied(map, coord.Item1, coord.Item2);
         }
 
-        private static bool Occupied(CellType[,] map, int xCoordinate, int yCoordinate)
+        public static bool Occupied(CellType[,] map, int xCoordinate, int yCoordinate)
         {
             int mapSize = (int)Math.Sqrt(map.Length);
             if (xCoordinate < 0 || yCoordinate < 0 || xCoordinate >= mapSize || yCoordinate >= mapSize)
@@ -109,6 +109,24 @@
 
         }
 
+        public static CellType Shoot(CellType[,] map, Tuple<int, int> c)
+        {
+            if (map[c.Item1, c.Item2] == CellType.Ship)
+            {
+                map[c.Item1, c.Item2] = CellType.Hit;
+                return CheckIfSunken(map, c);
+                
+            }
+            else
+            {
+                return CellType.Water;
+            }
+        }
+
+        private static CellType CheckIfSunken(CellType[,] map, Tuple<int, int> c)
+        {
+            throw new NotImplementedException();//problematyczne
+        }
     }
 
 
