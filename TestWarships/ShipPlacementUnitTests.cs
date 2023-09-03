@@ -14,7 +14,7 @@ namespace TestWarships
         [InlineData(2, 3, Direction.West, 2)]
         public void CanPlaceShip_ShouldReturnTrue(int x, int y, Direction direction, int length)
         {
-            Tuple<CellType[,], CellType[,]> bothMaps = CreateMaps(5, CellType.Water);
+            Tuple<Map, Map> bothMaps = CreateMaps(5, CellType.Water);
             Ship ship = new(length, direction, new Tuple<int, int>(x,y));
             CanPlaceShip(bothMaps.Item1, ship).Should().BeTrue();
             CanPlaceShip(bothMaps.Item2, ship).Should().BeTrue();
@@ -27,7 +27,7 @@ namespace TestWarships
         [InlineData(2, 3, Direction.West, 2)]
         public void CanPlaceShip_ShouldReturnFalseWhenOnAnotherShip(int x, int y, Direction direction, int length)
         {
-            Tuple<CellType[,], CellType[,]> bothMaps = CreateMaps(5, CellType.Ship);
+            Tuple<Map, Map> bothMaps = CreateMaps(5, CellType.Ship);
             Ship ship = new(length, direction, new Tuple<int, int>(x, y));
             CanPlaceShip(bothMaps.Item1, ship).Should().BeFalse();
             CanPlaceShip(bothMaps.Item2, ship).Should().BeFalse();
@@ -40,7 +40,7 @@ namespace TestWarships
         [InlineData(2, 3, Direction.West, 2)]
         public void PlacingShipTwice_ShouldBeImpossible(int x, int y, Direction direction, int length)
         {
-            Tuple<CellType[,], CellType[,]> bothMaps = CreateMaps(5, CellType.Water);
+            Tuple<Map, Map> bothMaps = CreateMaps(5, CellType.Water);
             Ship ship = new(length, direction, new Tuple<int, int>(x, y));
             CanPlaceShip(bothMaps.Item1, ship).Should().BeTrue();
             PlaceShip(bothMaps.Item1, ship);
@@ -54,7 +54,7 @@ namespace TestWarships
         [InlineData(2, 9, Direction.West, 3)]
         public void CanPlaceShip_ShouldReturnFalseWhenOutsideMap(int x, int y, Direction direction, int length)
         {
-            Tuple<CellType[,], CellType[,]> bothMaps = CreateMaps(5, CellType.Water);
+            Tuple<Map, Map> bothMaps = CreateMaps(5, CellType.Water);
             Ship ship = new(length, direction, new Tuple<int, int>(x, y));
 
             CanPlaceShip(bothMaps.Item1, ship).Should().BeFalse();
@@ -66,7 +66,7 @@ namespace TestWarships
         [InlineData(0)]
         public void CanPlaceShip_ShouldThrowException(int length)
         {
-            Tuple<CellType[,], CellType[,]> bothMaps = CreateMaps(5, CellType.Water);
+            Tuple<Map, Map> bothMaps = CreateMaps(5, CellType.Water);
             Ship ship = new(length, Direction.North, new Tuple<int, int>(0, 0));
 
             Action act = () => CanPlaceShip(bothMaps.Item1, ship).Should().BeTrue();

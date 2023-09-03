@@ -14,13 +14,13 @@ namespace TestWarships
         [InlineData(10)]
         public void CreateMaps_ShouldHaveProperDimiensions(int size)
         {
-            Tuple<CellType[,], CellType[,]> bothMaps = CreateMaps(size, CellType.Water);
-            bothMaps.Item1.Length.Should().Be(size * size);
-            bothMaps.Item2.Length.Should().Be(size * size);
-            bothMaps.Item1.GetLength(0).Should().Be(size);
-            bothMaps.Item2.GetLength(0).Should().Be(size);
-            bothMaps.Item1.GetLength(1).Should().Be(size);
-            bothMaps.Item2.GetLength(1).Should().Be(size);
+            Tuple<Map, Map> bothMaps = CreateMaps(size, CellType.Water);
+            bothMaps.Item1.grid.Length.Should().Be(size * size);
+            bothMaps.Item2.grid.Length.Should().Be(size * size);
+            bothMaps.Item1.grid.GetLength(0).Should().Be(size);
+            bothMaps.Item2.grid.GetLength(0).Should().Be(size);
+            bothMaps.Item1.grid.GetLength(1).Should().Be(size);
+            bothMaps.Item2.grid.GetLength(1).Should().Be(size);
             // bothMaps.Item1.Contains();
         }
 
@@ -38,8 +38,8 @@ namespace TestWarships
         [InlineData(CellType.Water)]
         public void FillMaps_ShouldBeOfProperContent(CellType cellType)
         {
-            Tuple<CellType[,], CellType[,]> bothMaps = CreateMaps(4, cellType);
-            foreach (CellType cell in bothMaps.Item1)
+            Tuple<Map, Map> bothMaps = CreateMaps(4, cellType);
+            foreach (CellType cell in bothMaps.Item1.grid)
             {
                 cell.Should().NotBe(null);
                 cell.Should().NotBe(CellType.Ship);

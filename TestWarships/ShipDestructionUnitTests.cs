@@ -19,7 +19,7 @@ namespace TestWarships
         [InlineData(2, 3, Direction.West, 2)]
         public void Destroy_ShouldSinkCells(int x, int y, Direction direction, int length)
         {
-            Tuple<CellType[,], CellType[,]> bothMaps = CreateMaps(5, CellType.Water);
+            Tuple<Map, Map> bothMaps = CreateMaps(5, CellType.Water);
             Ship ship = new(length, direction, new Tuple<int, int>(x, y));
             PlaceShip(bothMaps.Item1, ship);
             PlaceShip(bothMaps.Item1, ship);
@@ -27,7 +27,7 @@ namespace TestWarships
             List < Tuple<int, int> > coordinates= ship.GetCoordinates();
             foreach(Tuple<int,int> c in coordinates)
             {
-                bothMaps.Item1[c.Item1, c.Item2].Should().Be(CellType.Sunken);
+                bothMaps.Item1.grid[c.Item1, c.Item2].Should().Be(CellType.Sunken);
             }
         }
 
@@ -38,7 +38,11 @@ namespace TestWarships
         [InlineData(2, 3, Direction.West, 2)]
         public void ShootingShip_ShouldDestroyIt(int x, int y, Direction direction, int length)
         {
-            Tuple<CellType[,], CellType[,]> bothMaps = CreateMaps(5, CellType.Water);
+
+            Tuple<Map, Map> bothMaps = CreateMaps(5, CellType.Water);
+            Player player1 = new();
+
+            bothMaps.Item1.owner = player1;
             Ship ship = new(length, direction, new Tuple<int, int>(x, y));
             PlaceShip(bothMaps.Item1, ship);
             PlaceShip(bothMaps.Item1, ship);
@@ -51,7 +55,7 @@ namespace TestWarships
             }
             foreach (Tuple<int, int> c in coordinates)
             {
-                bothMaps.Item1[c.Item1, c.Item2].Should().Be(CellType.Sunken);
+                bothMaps.Item1.grid[c.Item1, c.Item2].Should().Be(CellType.Sunken);
             }
             ship.sunken.Should().BeTrue();
         }

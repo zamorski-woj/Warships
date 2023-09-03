@@ -21,37 +21,37 @@
     public static class WarshipsGame
     {
 
-        public static Tuple<CellType[,], CellType[,]> CreateMaps(int size, CellType cellType)
+        public static Tuple<Map, Map> CreateMaps(int size, CellType cellType)
         {
             if (size < 1)
             {
                 throw new ArgumentOutOfRangeException("Size should be positive");
             }
-            CellType[,] firstMap = new CellType[size, size];
-            CellType[,] secondMap = new CellType[size, size];
-            for (int i = 0; i < (int)Math.Sqrt(firstMap.Length); i++)
+            Map firstMap = new(size);
+            Map secondMap = new(size);
+
+            for (int i = 0; i < (int)Math.Sqrt(firstMap.grid.Length); i++)
             {
-                for (int j = 0; j < (int)Math.Sqrt(firstMap.Length); j++)
+                for (int j = 0; j < (int)Math.Sqrt(firstMap.grid.Length); j++)
                 {
 
-                    firstMap.SetValue(cellType, i, j);
-                    secondMap.SetValue(cellType, i, j);
+                    firstMap.grid.SetValue(cellType, i, j);
+                    secondMap.grid.SetValue(cellType, i, j);
 
                 }
-
             }
 
             return Tuple.Create(firstMap, secondMap);
         }
 
 
-        public static bool CanPlaceShip(CellType[,] map, int xCoordinate, int yCoordinate, Direction direction, int length)
+        public static bool CanPlaceShip(Map map, int xCoordinate, int yCoordinate, Direction direction, int length)
         {
             Ship ship = new(length, direction, new Tuple<int, int>(xCoordinate, yCoordinate));
             return CanPlaceShip(map, ship);
         }
 
-        public static bool CanPlaceShip(CellType[,] map, Ship ship)
+        public static bool CanPlaceShip(Map map, Ship ship)
         {
 
             if (ship.length < 1)
@@ -70,21 +70,21 @@
             return true;
         }
         
-        public static bool Occupied(CellType[,] map, Tuple<int, int> coord)
+        public static bool Occupied(Map map, Tuple<int, int> coord)
         {
             return Occupied(map, coord.Item1, coord.Item2);
         }
 
-        public static bool Occupied(CellType[,] map, int xCoordinate, int yCoordinate)
+        public static bool Occupied(Map map, int xCoordinate, int yCoordinate)
         {
-            int mapSize = (int)Math.Sqrt(map.Length);
+            int mapSize = (int)Math.Sqrt(map.grid.Length);
             if (xCoordinate < 0 || yCoordinate < 0 || xCoordinate >= mapSize || yCoordinate >= mapSize)
             {
                 return true;
             }
             else
             {
-                if (map[xCoordinate, yCoordinate] != CellType.Water && map[xCoordinate, yCoordinate] != CellType.Unknown)
+                if (map.grid[xCoordinate, yCoordinate] != CellType.Water && map.grid[xCoordinate, yCoordinate] != CellType.Unknown)
                 {
                     return true;
                 }
@@ -95,7 +95,7 @@
             }
         }
 
-        public static void PlaceShip(CellType[,] map, Ship ship)
+        public static void PlaceShip(Map map, Ship ship)
         {
             if (CanPlaceShip(map, ship))
             {
@@ -103,17 +103,20 @@
 
                 foreach (var coord in shipCoordinates)
                 {
-                    map[coord.Item1, coord.Item2] = CellType.Ship;
+                    map.grid[coord.Item1, coord.Item2] = CellType.Ship;
                 }
+
+                map.owner.fleet.Add(ship);
             }
+
 
         }
 
-        public static CellType Shoot(CellType[,] map, Tuple<int, int> c)
+        public static CellType Shoot(Map map, Tuple<int, int> c)
         {
-            if (map[c.Item1, c.Item2] == CellType.Ship)
+            if (map.grid[c.Item1, c.Item2] == CellType.Ship)
             {
-                map[c.Item1, c.Item2] = CellType.Hit;
+                map.grid[c.Item1, c.Item2] = CellType.Hit;
                 return CheckIfSunken(map, c);
                 
             }
@@ -123,9 +126,15 @@
             }
         }
 
-        private static CellType CheckIfSunken(CellType[,] map, Tuple<int, int> c)
+        private static CellType CheckIfSunken(Map map, Tuple<int, int> where)
         {
-            throw new NotImplementedException();//problematyczne
+            Player mapOwner = map.owner;
+            Ship whatGotHit = mapOwner.GetShipFromCoordinates(where);
+            if (whatGotHit != null)
+            {
+                return whatGotHit.CheckIfSunken(map, whatGotHit);
+            }
+            else return CellType.Water;//Should not happen
         }
     }
 

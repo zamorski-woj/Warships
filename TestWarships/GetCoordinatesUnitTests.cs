@@ -12,7 +12,6 @@ namespace TestWarships
         [InlineData(2, 3, Direction.West, 2)]
         public void GetCoordinates(int x, int y, Direction direction, int length)
         {
-            //Tuple<CellType[,], CellType[,]> bothMaps = CreateMaps(5, CellType.Water);
             Ship ship = new(length, direction, new Tuple<int, int>(x, y));
             List<Tuple<int, int>> coordinates =  ship.GetCoordinates();
             coordinates.Count.Should().Be(length);

@@ -18,17 +18,17 @@ namespace Warships
             this.mainCoordinate = mainCoordinate;
         }
 
-        public Ship(CellType[,] map, int length)//Randomize
+        public Ship(Map map, int length)//Randomize
         {
             this.length = length;
-            Random random = new Random();
+            Random random = new();
             int xCoordinate, yCoordinate;
             Direction direction;
 
             do
             {
-                xCoordinate = random.Next(0, (int)Math.Sqrt(map.Length));
-                yCoordinate = random.Next(0, (int)Math.Sqrt(map.Length));
+                xCoordinate = random.Next(0, (int)Math.Sqrt(map.grid.Length));
+                yCoordinate = random.Next(0, (int)Math.Sqrt(map.grid.Length));
                 direction = (Direction)random.Next(0, 4);
             }
             while (!CanPlaceShip(map, xCoordinate, yCoordinate, direction, length));
@@ -76,14 +76,42 @@ namespace Warships
             return allCoordinates;
         }
 
-        public void Destroy(CellType[,] map)
+        public void Destroy(Map map)
         {
             var coordinates = this.GetCoordinates();
             foreach(var coordinate in coordinates)
             {
-                map[coordinate.Item1, coordinate.Item2] = CellType.Sunken; 
+                map.grid[coordinate.Item1, coordinate.Item2] = CellType.Sunken; 
             }
             this.sunken = true;
+        }
+
+        internal bool ExistsHere(Tuple<int, int> where)
+        {
+            var coordinates = GetCoordinates();
+            foreach (var coordinate in coordinates)
+            {
+                if(coordinate == where)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        internal CellType CheckIfSunken(Map map, Ship whatGotHit)
+        {
+            var coordinates = GetCoordinates();
+            foreach (var coordinate in coordinates)
+            {
+                if (map.grid[coordinate.Item1, coordinate.Item2]== CellType.Ship)
+                {
+                    return CellType.Ship;
+                }
+            }
+            this.sunken = true;
+            return CellType.Sunken;
+
         }
     }
 }
