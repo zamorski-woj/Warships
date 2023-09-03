@@ -14,7 +14,8 @@ namespace TestWarships
         [InlineData(10)]
         public void CreateMaps_ShouldHaveProperDimiensions(int size)
         {
-            Tuple<Map, Map> bothMaps = CreateMaps(size, CellType.Water);
+            Tuple<Player, Player > players= CreateTwoPlayers("name", "name", size);
+            Tuple<Map, Map>  bothMaps = new(players.Item1.map, players.Item2.map);
             bothMaps.Item1.grid.Length.Should().Be(size * size);
             bothMaps.Item2.grid.Length.Should().Be(size * size);
             bothMaps.Item1.grid.GetLength(0).Should().Be(size);
@@ -22,7 +23,7 @@ namespace TestWarships
             bothMaps.Item1.grid.GetLength(1).Should().Be(size);
             bothMaps.Item2.grid.GetLength(1).Should().Be(size);
             // bothMaps.Item1.Contains();
-        }
+        } 
 
         [Theory]
         [InlineData(-5)]

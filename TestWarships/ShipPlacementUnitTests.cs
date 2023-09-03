@@ -16,8 +16,8 @@ namespace TestWarships
         {
             Tuple<Map, Map> bothMaps = CreateMaps(5, CellType.Water);
             Ship ship = new(length, direction, new Tuple<int, int>(x,y));
-            CanPlaceShip(bothMaps.Item1, ship).Should().BeTrue();
-            CanPlaceShip(bothMaps.Item2, ship).Should().BeTrue();
+            bothMaps.Item1.CanPlaceShip(ship).Should().BeTrue();
+            bothMaps.Item2.CanPlaceShip(ship).Should().BeTrue();
         }
 
         [Theory]
@@ -29,8 +29,8 @@ namespace TestWarships
         {
             Tuple<Map, Map> bothMaps = CreateMaps(5, CellType.Ship);
             Ship ship = new(length, direction, new Tuple<int, int>(x, y));
-            CanPlaceShip(bothMaps.Item1, ship).Should().BeFalse();
-            CanPlaceShip(bothMaps.Item2, ship).Should().BeFalse();
+            bothMaps.Item1.CanPlaceShip(ship).Should().BeFalse();
+            bothMaps.Item2.CanPlaceShip(ship).Should().BeFalse();
         }
 
         [Theory]
@@ -42,9 +42,9 @@ namespace TestWarships
         {
             Tuple<Map, Map> bothMaps = CreateMaps(5, CellType.Water);
             Ship ship = new(length, direction, new Tuple<int, int>(x, y));
-            CanPlaceShip(bothMaps.Item1, ship).Should().BeTrue();
-            PlaceShip(bothMaps.Item1, ship);
-            CanPlaceShip(bothMaps.Item1, ship).Should().BeFalse();
+            bothMaps.Item1.CanPlaceShip( ship).Should().BeTrue();
+            bothMaps.Item1.PlaceShip(ship);
+            bothMaps.Item1.CanPlaceShip(ship).Should().BeFalse();
         }  
 
         [Theory]
@@ -57,8 +57,8 @@ namespace TestWarships
             Tuple<Map, Map> bothMaps = CreateMaps(5, CellType.Water);
             Ship ship = new(length, direction, new Tuple<int, int>(x, y));
 
-            CanPlaceShip(bothMaps.Item1, ship).Should().BeFalse();
-            CanPlaceShip(bothMaps.Item2, ship).Should().BeFalse();
+            bothMaps.Item1.CanPlaceShip(ship).Should().BeFalse();
+            bothMaps.Item2.CanPlaceShip(ship).Should().BeFalse();
         }
 
         [Theory]
@@ -69,7 +69,7 @@ namespace TestWarships
             Tuple<Map, Map> bothMaps = CreateMaps(5, CellType.Water);
             Ship ship = new(length, Direction.North, new Tuple<int, int>(0, 0));
 
-            Action act = () => CanPlaceShip(bothMaps.Item1, ship).Should().BeTrue();
+            Action act = () => bothMaps.Item1.CanPlaceShip(ship).Should().BeTrue();
             act.Should().Throw<ArgumentOutOfRangeException>();
         }
 
