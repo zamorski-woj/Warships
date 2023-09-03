@@ -2,7 +2,7 @@
 {
     public class Player
     {
-        public List<Ship> fleet;
+        public List<Ship> fleet = new();
         public string name;
         public Map map, enemyMap;
 
@@ -16,7 +16,7 @@
             this.name = v;
         }
 
-        internal Ship GetShipFromCoordinates(Tuple<int, int> where)
+        public Ship GetShipFromCoordinates(Tuple<int, int> where)
         {
             foreach (var ship in fleet)
             {

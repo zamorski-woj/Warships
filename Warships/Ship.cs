@@ -31,11 +31,11 @@ namespace Warships
                 yCoordinate = random.Next(0, (int)Math.Sqrt(map.grid.Length));
                 direction = (Direction)random.Next(0, 4);
             }
-            while (!CanPlaceShip(map, xCoordinate, yCoordinate, direction, length));
+            while (!map.CanPlaceShip(xCoordinate, yCoordinate, direction, length));
 
             this.heading = direction;
             this.mainCoordinate = new Tuple<int, int>(xCoordinate, yCoordinate);
-            PlaceShip(map, this);
+            map.PlaceShip(this);
         }
 
         public List<Tuple<int, int>> GetCoordinates()
@@ -91,7 +91,7 @@ namespace Warships
             var coordinates = GetCoordinates();
             foreach (var coordinate in coordinates)
             {
-                if(coordinate == where)
+                if(coordinate.Item1 == where.Item1 && coordinate.Item2 == where.Item2)
                 {
                     return true;
                 }
@@ -99,7 +99,7 @@ namespace Warships
             return false;
         }
 
-        internal CellType CheckIfSunken(Map map, Ship whatGotHit)
+        internal CellType CheckIfSunken(Map map)
         {
             var coordinates = GetCoordinates();
             foreach (var coordinate in coordinates)
@@ -109,7 +109,7 @@ namespace Warships
                     return CellType.Ship;
                 }
             }
-            this.sunken = true;
+            this.Destroy(map);
             return CellType.Sunken;
 
         }
