@@ -1,4 +1,6 @@
-﻿namespace Warships
+﻿using Microsoft.VisualBasic;
+
+namespace Warships
 {
     public class Map
     {
@@ -41,6 +43,7 @@
 
         public void PlaceShip(Ship ship)
         {
+
             if (this.CanPlaceShip(ship))
             {
                 List<Tuple<int, int>> shipCoordinates = ship.GetCoordinates();
@@ -65,10 +68,7 @@
         public bool CanPlaceShip(Ship ship)
         {
 
-            if (ship.length < 1)
-            {
-                throw new ArgumentOutOfRangeException("Lenght shoud be positive");
-            }
+            
             List<Tuple<int, int>> shipCoordinates = ship.GetCoordinates();
 
             foreach (var coord in shipCoordinates)
@@ -106,6 +106,65 @@
             }
         }
 
+        internal void ShowMap()
+        {
+
+            Console.WriteLine("  ABCDEFGHIJ");
+            Console.WriteLine();
+            for (int i = 0; i < (int)Math.Sqrt(grid.Length); i++)
+            {
+                Console.Write(i+1);
+                Console.Write(" ");
+
+                for (int j = 0; j < (int)Math.Sqrt(grid.Length); j++)
+                {
+                    switch (grid[i, j])
+                    {
+                        case CellType.Unknown:
+                            Console.Write("?");
+                            break;
+                        case CellType.Water:
+                            Console.BackgroundColor = ConsoleColor.Cyan;
+                            Console.ForegroundColor = ConsoleColor.DarkBlue;
+                            Console.Write("~");
+                            Console.ResetColor();
+                            break;
+                        case CellType.Ship:
+                            Console.BackgroundColor = ConsoleColor.Cyan;
+                            Console.ForegroundColor = ConsoleColor.DarkYellow;
+                            Console.Write("O");
+                            Console.ResetColor();
+                            break;
+                        case CellType.Hit:
+                            Console.BackgroundColor = ConsoleColor.Cyan;
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
+
+                            Console.Write("*");
+                            Console.ResetColor();
+                            break;
+                        case CellType.Sunken:
+                            Console.BackgroundColor = ConsoleColor.Cyan;
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
+
+                            Console.Write("X");
+                            Console.ResetColor();
+                            break;
+                    }
+                }
+                Console.WriteLine();
+
+            }
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+
+
+        }
+
+        internal void PlotOutcome(Tuple<int, int> whereToShoot, CellType outcome)
+        {
+            grid[whereToShoot.Item1, whereToShoot.Item2] = outcome;
+        }
     }
 
 }

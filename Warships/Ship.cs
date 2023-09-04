@@ -20,6 +20,11 @@ namespace Warships
 
         public Ship(Map map, int length)//Randomize
         {
+            if (length < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(length));
+            }
+
             this.length = length;
             Random random = new();
             int xCoordinate, yCoordinate;
@@ -110,6 +115,7 @@ namespace Warships
                 }
             }
             this.Destroy(map);
+            this.Destroy(map.owner.opponent.enemyMap);
             return CellType.Sunken;
 
         }
