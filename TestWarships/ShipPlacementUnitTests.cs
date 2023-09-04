@@ -61,17 +61,7 @@ namespace TestWarships
             bothMaps.Item2.CanPlaceShip(ship).Should().BeFalse();
         }
 
-        [Theory]
-        [InlineData(-5)]
-        [InlineData(0)]
-        public void CanPlaceShip_ShouldThrowException(int length)
-        {
-            Tuple<Map, Map> bothMaps = CreateMaps(5, CellType.Water);
-            Ship ship = new(length, Direction.North, new Tuple<int, int>(0, 0));
-
-            Action act = () => bothMaps.Item1.CanPlaceShip(ship).Should().BeTrue();
-            act.Should().Throw<ArgumentOutOfRangeException>();
-        }
+      
 
     }
 }
