@@ -1,4 +1,5 @@
-﻿using static Warships.WarshipsGame;
+﻿using System.Text.RegularExpressions;
+using static Warships.WarshipsGame;
 namespace Warships
 {
     public class Player
@@ -27,7 +28,7 @@ namespace Warships
             }
         }
 
-        public Ship GetShipFromCoordinates(Tuple<int, int> where)
+        public Ship? GetShipFromCoordinates(Tuple<int, int> where)
         {
             foreach (var ship in fleet)
             {
@@ -46,12 +47,13 @@ namespace Warships
             Console.Clear();
             Console.WriteLine(this.name + "'s turn. Press any Key");
             Console.ReadKey();
-            Console.Clear();
-            ShowBothMaps();
             
             string? order =null;
-            while (order==null)
+            while (order==null || NotValidOrder(order))
             {
+                Console.Clear();
+                ShowBothMaps();
+                Console.WriteLine("Your orders, Admiral " + name + "?");
                 order = Console.ReadLine();
             }
             Tuple<int, int> whereToShoot = CoordinatesFromString(order);
@@ -60,9 +62,21 @@ namespace Warships
             Console.Clear();
             ShowBothMaps();
             Console.WriteLine(OutcomeToString(outcome));
-            Console.WriteLine("Press any key");
 
+            Console.WriteLine("Press any key");
             Console.ReadKey();
+        }
+
+        private static bool NotValidOrder(string order)
+        {
+            if(Regex.IsMatch(order, @"^[a-jA-J][0-9]$") || Regex.IsMatch(order, @"^[0-9][a-jA-J]$"))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         private static string OutcomeToString(CellType outcome)
@@ -88,9 +102,61 @@ namespace Warships
 
         private Tuple<int, int> CoordinatesFromString(string order)
         {
-            int x = int.Parse(order[0].ToString());
-            int y = int.Parse(order[1].ToString());
+            int x=0, y=0;
+            if (Regex.IsMatch(order, @"^[a-jA-J][0-9]$"))
+            {
+
+                 x= IntFromLetter(order[0].ToString());
+                 y = int.Parse(order[1].ToString());
+            }
+            if (Regex.IsMatch(order, @"^[0-9][a-jA-J]$"))
+            {
+
+                 x = int.Parse(order[0].ToString());
+                 y = IntFromLetter(order[1].ToString());
+            }
+
             return new Tuple<int, int>(x, y);
+        }
+
+        private static int IntFromLetter(string v)
+        {
+            switch(v)
+            {
+                case "a":
+                case "A":
+                    return 0;
+                case "b":
+                case "B":
+                    return 1;
+                case "c":
+                case "C":
+                    return 2;
+                case "d":
+                case "D":
+                    return 3;
+                case "e":
+                case "E":
+                    return 4;
+                case "f":
+                case "F":
+                    return 5;
+                    case "g":
+                case "G":
+                    return 6;
+                    case "h":
+                    case "H":
+                    return 7;
+                    case "i":
+                case "I":
+                    return 8;
+                default:
+                case "j":
+                case "J":
+                    return 9;
+
+            }
+
         }
 
         public bool FleetStillAlive()

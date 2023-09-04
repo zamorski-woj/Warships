@@ -53,6 +53,14 @@ namespace Warships
                 p1.PlayOneTurn(p2);
                 p2.PlayOneTurn(p1);
             }
+            if(p1.FleetStillAlive())
+            {
+                Console.WriteLine(p1.name + " won!");
+            }
+            else
+            {
+                Console.WriteLine(p2.name + " won!");
+            }
 
         }
     }

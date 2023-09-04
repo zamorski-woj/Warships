@@ -108,13 +108,16 @@ namespace Warships
 
         internal void ShowMap()
         {
-
-            Console.WriteLine("  ABCDEFGHIJ");
-            Console.WriteLine();
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine(" ABCDEFGHIJ");
+            Console.ResetColor();
             for (int i = 0; i < (int)Math.Sqrt(grid.Length); i++)
             {
-                Console.Write(i+1);
-                Console.Write(" ");
+                Console.BackgroundColor = ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.Write(i);
+                Console.ResetColor();
 
                 for (int j = 0; j < (int)Math.Sqrt(grid.Length); j++)
                 {
