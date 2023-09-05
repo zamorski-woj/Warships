@@ -22,7 +22,6 @@ namespace TestWarships
             bothMaps.Item2.grid.GetLength(0).Should().Be(size);
             bothMaps.Item1.grid.GetLength(1).Should().Be(size);
             bothMaps.Item2.grid.GetLength(1).Should().Be(size);
-            // bothMaps.Item1.Contains();
         } 
 
         [Theory]

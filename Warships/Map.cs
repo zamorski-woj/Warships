@@ -52,10 +52,7 @@ namespace Warships
                 {
                     this.grid[coord.Item1, coord.Item2] = CellType.Ship;
                 }
-                if (this.owner != null)
-                {
-                    this.owner.fleet.Add(ship);
-                }
+                this.owner?.fleet.Add(ship);
             }
         }
 
@@ -68,7 +65,7 @@ namespace Warships
         public bool CanPlaceShip(Ship ship)
         {
 
-            
+
             List<Tuple<int, int>> shipCoordinates = ship.GetCoordinates();
 
             foreach (var coord in shipCoordinates)
@@ -95,74 +92,10 @@ namespace Warships
             }
             else
             {
-                if (this.grid[xCoordinate, yCoordinate] != CellType.Water && this.grid[xCoordinate, yCoordinate] != CellType.Unknown)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return (grid[xCoordinate, yCoordinate] != CellType.Water && grid[xCoordinate, yCoordinate] != CellType.Unknown);
             }
         }
 
-        internal void ShowMap()
-        {
-            Console.BackgroundColor = ConsoleColor.White;
-            Console.ForegroundColor = ConsoleColor.Black;
-            Console.WriteLine(" ABCDEFGHIJ");
-            Console.ResetColor();
-            for (int i = 0; i < (int)Math.Sqrt(grid.Length); i++)
-            {
-                Console.BackgroundColor = ConsoleColor.White;
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.Write(i);
-                Console.ResetColor();
-
-                for (int j = 0; j < (int)Math.Sqrt(grid.Length); j++)
-                {
-                    switch (grid[i, j])
-                    {
-                        case CellType.Unknown:
-                            Console.Write("?");
-                            break;
-                        case CellType.Water:
-                            Console.BackgroundColor = ConsoleColor.Cyan;
-                            Console.ForegroundColor = ConsoleColor.DarkBlue;
-                            Console.Write("~");
-                            Console.ResetColor();
-                            break;
-                        case CellType.Ship:
-                            Console.BackgroundColor = ConsoleColor.Cyan;
-                            Console.ForegroundColor = ConsoleColor.DarkYellow;
-                            Console.Write("O");
-                            Console.ResetColor();
-                            break;
-                        case CellType.Hit:
-                            Console.BackgroundColor = ConsoleColor.Cyan;
-                            Console.ForegroundColor = ConsoleColor.DarkRed;
-
-                            Console.Write("*");
-                            Console.ResetColor();
-                            break;
-                        case CellType.Sunken:
-                            Console.BackgroundColor = ConsoleColor.Cyan;
-                            Console.ForegroundColor = ConsoleColor.DarkRed;
-
-                            Console.Write("X");
-                            Console.ResetColor();
-                            break;
-                    }
-                }
-                Console.WriteLine();
-
-            }
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine();
-
-
-        }
 
         internal void PlotOutcome(Tuple<int, int> whereToShoot, CellType outcome)
         {

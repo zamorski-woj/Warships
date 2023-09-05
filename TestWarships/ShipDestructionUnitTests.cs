@@ -86,7 +86,7 @@ namespace TestWarships
                 {
                     map.grid[c.Item1, c.Item2].Should().Be(CellType.Ship);
 
-                    continue;//
+                    continue;
                 }
                 else
                 {
