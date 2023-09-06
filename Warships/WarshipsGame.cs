@@ -67,9 +67,13 @@ namespace Warships
             int y = coordinates.Item2;
             if (map.IsOnMap(coordinates))
             {
-                if (map.grid[x, y] == CellType.Ship)
+                if (map.grid[x, y] == CellType.Ship || map.grid[x, y] == CellType.Hit)
                 {
                     map.grid[x, y] = CellType.Hit;
+                    return CheckIfSunken(map, coordinates);
+                }
+                if ( map.grid[x, y] == CellType.Sunken)
+                {
                     return CheckIfSunken(map, coordinates);
                 }
                 else

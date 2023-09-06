@@ -23,6 +23,7 @@ export class Home extends Component {
 }
 
 
-function ConfirmNames() {
+function ConfirmNames()
+{
     
 }

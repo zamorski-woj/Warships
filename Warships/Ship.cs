@@ -86,7 +86,7 @@ namespace Warships
             {
                 if (map.grid[coordinate.Item1, coordinate.Item2] == CellType.Ship)
                 {
-                    return CellType.Ship;//that means it is alive
+                    return CellType.Hit;//that means it is alive
                 }
             }
             this.Destroy(map);

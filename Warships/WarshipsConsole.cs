@@ -1,17 +1,49 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.ComponentModel;
+using System.Drawing;
+using System.Text.RegularExpressions;
 using static Warships.WarshipsGame;
+using static Warships.NPC;
 
 namespace Warships
 {
     public static class WarshipsConsole
     {
-
-        public static void Run()
+        public static void Menu()
         {
+            int numberOfPlayers=2;
+            string? decision = null;
+            while(decision == null)
+            {
+                Console.WriteLine("How many human players? 0, 1 or 2?");
+                decision = Console.ReadKey().KeyChar.ToString();
+                try
+                {
+                    numberOfPlayers = int.Parse(decision);
+                }
+                catch(FormatException f)
+                {
+                    continue;//with default 2
+                }
+            }
+
+            Console.Clear();
             Console.WriteLine("What to call the first player?");
-            string name1 = Console.ReadLine() ?? "Ziutek";
+            string name1 = Console.ReadLine() ?? "Ewaryst";
             Console.WriteLine("What to call the second player?");
-            string name2 = Console.ReadLine() ?? "Ewaryst";
+            string name2 = Console.ReadLine() ?? "Antyfilidor";
+            Console.Clear();
+
+            Player p =RunGame(numberOfPlayers, true, name1, name2);
+            Console.WriteLine(p.name + " won!");
+            Console.ReadLine();
+            Console.Clear();
+
+        }
+
+        public static Player RunGame(int numberOfPlayers, bool showNPC = true, string name1 = "Ewaryst", string name2 = "Antyfilidor")
+        {
+            
             Tuple<Player, Player> bothPlayers = CreateTwoPlayers(name1, name2, 10);
             Player p1 = bothPlayers.Item1;
             Player p2 = bothPlayers.Item2;
@@ -20,49 +52,61 @@ namespace Warships
 
             while (p1.FleetStillAlive() && p2.FleetStillAlive())
             {
-                PlayOneTurn(p1, p2);
-                PlayOneTurn(p2, p1);
+                switch (numberOfPlayers)
+                {
+                    case 0:
+                        PlayAutomaticTurn(p1, p2, showNPC);
+                        PlayAutomaticTurn(p2, p1, showNPC);
+                        break;
+                    case 1:
+                        PlayOneTurn(p1, p2);
+                        PlayAutomaticTurn(p2, p1, showNPC);
+                        break;
+                    case 2:
+                    default:
+                        PlayOneTurn(p1, p2);
+                        PlayOneTurn(p2, p1);
+                        break;
+                }
+
             }
             if (p1.FleetStillAlive())
             {
-                Console.WriteLine(p1.name + " won!");
+                return p1;
             }
             else
             {
-                Console.WriteLine(p2.name + " won!");
+                return p2;
             }
-            Console.ReadLine();
-            Console.Clear();
         }
 
-
-        private static void PlayOneTurn(Player p, Player opponent)
+        private static void PlayOneTurn(Player player, Player opponent)
         {
-
             Console.Clear();
-            Console.WriteLine(p.name + "'s turn. Press any Key");
+            Console.WriteLine(player.name + "'s turn. Press any Key");
             Console.ReadKey();
 
             string? order = null;
             while (order == null || NotValidOrder(order))
             {
                 Console.Clear();
-                ShowBothMaps(p);
-                Console.WriteLine("Your orders, Admiral " + p.name + "?");
+                ShowBothMaps(player);
+                Console.WriteLine("Your orders, Admiral " + player.name + "?");
                 order = Console.ReadLine();
             }
             Tuple<int, int> whereToShoot = CoordinatesFromString(order);
             CellType outcome = Shoot(opponent.map, whereToShoot);
-            p.enemyMap.PlotOutcome(whereToShoot, outcome);
+            player.lastMove = whereToShoot;
+            player.enemyMap.PlotOutcome(whereToShoot, outcome);
             Console.Clear();
-            ShowBothMaps(p);
+            ShowBothMaps(player);
             Console.WriteLine(OutcomeToString(outcome));
 
             Console.WriteLine("Press any key");
             Console.ReadKey();
         }
 
-        private static string OutcomeToString(CellType outcome)
+        public static string OutcomeToString(CellType outcome)
         {
             return outcome switch
             {
@@ -73,6 +117,7 @@ namespace Warships
                 _ => "Did you enter right coordinates?",
             };
         }
+      
         private static bool NotValidOrder(string order)
         {
             if (Regex.IsMatch(order, @"^[a-jA-J][0-9]$") || Regex.IsMatch(order, @"^[0-9][a-jA-J]$"))
@@ -85,21 +130,18 @@ namespace Warships
             }
         }
 
-
         private static Tuple<int, int> CoordinatesFromString(string order)
         {
             int x = 0, y = 0;
             if (Regex.IsMatch(order, @"^[a-jA-J][0-9]$"))
             {
-
                 x = IntFromLetter(order[0].ToString());
                 y = int.Parse(order[1].ToString());
             }
             if (Regex.IsMatch(order, @"^[0-9][a-jA-J]$"))
             {
-
-                x = int.Parse(order[0].ToString());
-                y = IntFromLetter(order[1].ToString());
+                y = int.Parse(order[0].ToString());
+                x = IntFromLetter(order[1].ToString());
             }
 
             return new Tuple<int, int>(x, y);
@@ -107,68 +149,47 @@ namespace Warships
 
         private static int IntFromLetter(string v)
         {
-            switch (v)
+            return v switch
             {
-                case "a":
-                case "A":
-                    return 0;
-                case "b":
-                case "B":
-                    return 1;
-                case "c":
-                case "C":
-                    return 2;
-                case "d":
-                case "D":
-                    return 3;
-                case "e":
-                case "E":
-                    return 4;
-                case "f":
-                case "F":
-                    return 5;
-                case "g":
-                case "G":
-                    return 6;
-                case "h":
-                case "H":
-                    return 7;
-                case "i":
-                case "I":
-                    return 8;
-                default:
-                case "j":
-                case "J":
-                    return 9;
-
-            }
-
+                "a" or "A" => 0,
+                "b" or "B" => 1,
+                "c" or "C" => 2,
+                "d" or "D" => 3,
+                "e" or "E" => 4,
+                "f" or "F" => 5,
+                "g" or "G" => 6,
+                "h" or "H" => 7,
+                "i" or "I" => 8,
+                _ => 9,
+            };
         }
-
 
         private static void ShowBothMaps(Player p)
         {
+
             Console.WriteLine("Your map");
-            ShowMap(p.map);
+            ShowMap(p.map, p.opponent.lastMove);
 
             Console.WriteLine("Enemy map");
-            ShowMap(p.enemyMap);
+            ShowMap(p.enemyMap, p.lastMove);
         }
 
-        private static void ShowMap(Map m)
+        public static void ShowMap(Map m, Tuple<int, int>? lastMove = null)
         {
+            lastMove ??= new Tuple<int, int>(-1, -1);
+            int mapSize = m.grid.GetLength(0);
             Console.BackgroundColor = ConsoleColor.White;
             Console.ForegroundColor = ConsoleColor.Black;
             Console.WriteLine(" ABCDEFGHIJ");
             Console.ResetColor();
-            for (int i = 0; i < (int)Math.Sqrt(m.grid.Length); i++)
+            for (int j = 0; j < mapSize; j++)
             {
                 Console.BackgroundColor = ConsoleColor.White;
                 Console.ForegroundColor = ConsoleColor.Black;
-                Console.Write(i);
+                Console.Write(j);
                 Console.ResetColor();
 
-                for (int j = 0; j < (int)Math.Sqrt(m.grid.Length); j++)
+                for (int i = 0; i < mapSize; i++)
                 {
                     switch (m.grid[i, j])
                     {
@@ -178,36 +199,48 @@ namespace Warships
                         case CellType.Water:
                             Console.BackgroundColor = ConsoleColor.Cyan;
                             Console.ForegroundColor = ConsoleColor.DarkBlue;
+                            if(lastMove.Item1==i && lastMove.Item2==j)
+                            {
+                                Console.BackgroundColor = ConsoleColor.Yellow;
+                            }
                             Console.Write("~");
                             Console.ResetColor();
                             break;
                         case CellType.Ship:
                             Console.BackgroundColor = ConsoleColor.Cyan;
                             Console.ForegroundColor = ConsoleColor.DarkYellow;
+                            if (lastMove.Item1 == i && lastMove.Item2 == j)
+                            {
+                                Console.BackgroundColor = ConsoleColor.Yellow;
+                            }
                             Console.Write("O");
                             Console.ResetColor();
                             break;
                         case CellType.Hit:
                             Console.BackgroundColor = ConsoleColor.Cyan;
                             Console.ForegroundColor = ConsoleColor.DarkRed;
-
+                            if (lastMove.Item1 == i && lastMove.Item2 == j)
+                            {
+                                Console.BackgroundColor = ConsoleColor.Yellow;
+                            }
                             Console.Write("*");
                             Console.ResetColor();
                             break;
                         case CellType.Sunken:
                             Console.BackgroundColor = ConsoleColor.Cyan;
                             Console.ForegroundColor = ConsoleColor.DarkRed;
-
+                            if (lastMove.Item1 == i && lastMove.Item2 == j)
+                            {
+                                Console.BackgroundColor = ConsoleColor.Yellow;
+                            }
                             Console.Write("X");
                             Console.ResetColor();
                             break;
                     }
                 }
                 Console.WriteLine();
-
             }
             Console.WriteLine("\n\n");
         }
-
     }
 }

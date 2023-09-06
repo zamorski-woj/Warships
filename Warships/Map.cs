@@ -18,7 +18,7 @@ namespace Warships
             owner = new Player("Ziutek");
         }
 
-        internal void FillWith(CellType cellType)
+        public void FillWith(CellType cellType)
         {
             for (int i = 0; i < (int)Math.Sqrt(grid.Length); i++)
             {

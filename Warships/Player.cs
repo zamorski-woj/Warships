@@ -8,6 +8,8 @@ namespace Warships
         public string name;
         public Map map, enemyMap;
         public Player opponent;
+        internal Tuple<int, int>? lastMove;
+
         public Player()
         {
             this.name = "Ziutek";
@@ -20,7 +22,10 @@ namespace Warships
 
         public void GenerateFleet(List<int>? list = null)
         {
-            list ??= new List<int>() { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 1 };
+            if(list == null || list.Count<1)
+            {
+                list = new List<int>() { 5, 4, 3, 3, 3, 2, 2, 2 };
+            }
 
             foreach (int i in list)
             {

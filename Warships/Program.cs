@@ -35,7 +35,7 @@ namespace Warships
 
 
 
-            var task = Task.Run(() => WarshipsConsole.Run());//run console and web simultanously
+            var task = Task.Run(() => WarshipsConsole.Menu());//run console and web simultanously
             app.Run();
 
         }
