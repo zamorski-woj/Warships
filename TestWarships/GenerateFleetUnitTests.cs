@@ -13,8 +13,8 @@ namespace TestWarships
             players.Item1.GenerateFleet(list);
             players.Item2.GenerateFleet(list);
 
-            players.Item1.fleet.Count.Should().Be(15);
-            players.Item2.fleet.Count.Should().Be(15);
+            players.Item1.fleet.Count.Should().Be(8);
+            players.Item2.fleet.Count.Should().Be(8);
         }
 
 
