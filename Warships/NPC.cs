@@ -68,6 +68,7 @@ namespace Warships
                         case CellType.Hit:
                             weight[i, j] -= 999;
                             weight = ChangeNeighbouring(weight, i, j, +50);
+                            PredictLines(enemyMap, weight, i, j);
                             break;
 
                         case CellType.Ship://how would he know?
@@ -90,6 +91,92 @@ namespace Warships
             double maxValue = weight.Cast<double>().Max();
             return IndexOf(weight, maxValue);
 
+        }
+
+        private static void PredictLines(Map map, double[,] weight, int x, int y)//we know xy was hit
+        {
+            int size = map.grid.GetLength(0);
+            bool endloop = false;//lets me break out of loop inside the switch. ambigous "break" keyword
+            for (int i = x + 1; i < size; i++)
+            {
+                if (endloop)
+                {
+                    break;
+                }
+                switch (map.grid[i, y])
+                {
+                    case CellType.Hit:
+                        break;
+                    case CellType.Unknown:
+                        weight[i, y] += 100;
+                        endloop = true;
+                        break;
+                    default:
+                        endloop = true;
+                        break;
+                }
+            }
+            endloop = false;
+            for (int i = x - 1; i >= 0; i--)
+            {
+                if (endloop)
+                {
+                    break;
+                }
+                switch (map.grid[i, y])
+                {
+                    case CellType.Hit:
+                        break;
+                    case CellType.Unknown:
+                        weight[i, y] += 100;
+                        endloop = true;
+                        break;
+                    default:
+                        endloop = true;
+                        break;
+                }
+            }
+            endloop = false;
+            for (int j = y - 1; j >= 0; j--)
+            {
+                if (endloop)
+                {
+                    break;
+                }
+                switch (map.grid[x, j])
+                {
+                    case CellType.Hit:
+                        break;
+                    case CellType.Unknown:
+                        weight[x, j] += 100;
+                        endloop = true;
+                        break;
+                    default:
+                        endloop = true;
+                        break;
+                }
+            }
+            endloop = false;
+            for (int j = y + 1; j < size; j++)
+            {
+                if (endloop)
+                {
+                    break;
+                }
+                switch (map.grid[x, j])
+                {
+                    case CellType.Hit:
+                        break;
+                    case CellType.Unknown:
+                        weight[x, j] += 100;
+                        endloop = true;
+                        break;
+                    default:
+                        endloop = true;
+                        break;
+                }
+
+            }
         }
 
         private static Tuple<int, int> IndexOf(double[,] array, double value)
