@@ -24,7 +24,7 @@ namespace Warships
         {
             if(list == null || list.Count<1)
             {
-                list = new List<int>() { 5, 4, 3, 3, 3, 2, 2, 2 };
+                list = new List<int>() { 5, 4, 4, 3, 3, 3, 2, 2 };
             }
 
             foreach (int i in list)

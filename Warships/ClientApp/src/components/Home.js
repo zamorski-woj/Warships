@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+
 export class Home extends Component {
     static displayName = Home.name;
 
@@ -15,7 +16,19 @@ export class Home extends Component {
                     <li>Admiral <input name2="player2" />
                     </li>
                 </ul>
-                <button onClick={ConfirmNames}>OK</button>
+                <div>
+                    <button onClick={(e) => {
+                        this.ButtonStart(e, 0);
+                    }}
+                    >Computer vs Computer</button>
+                    <button onClick={(e) => {
+                        this.ButtonStart(e, 1);
+                    }}>Human vs Computer</button>
+                    <button onClick={(e) => {
+                        this.ButtonStart(e, 2);
+                    }}>Human vs Human</button>
+
+                </div>
             </div>
         );
     }
@@ -23,7 +36,7 @@ export class Home extends Component {
 }
 
 
-function ConfirmNames()
+function ButtonStart(event, humans)
 {
     
 }
