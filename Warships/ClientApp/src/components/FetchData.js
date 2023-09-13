@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+/*import React, { Component } from 'react';
 
 export class FetchData extends Component {
   static displayName = FetchData.name;
@@ -56,4 +56,4 @@ export class FetchData extends Component {
     const data = await response.json();
     this.setState({ forecasts: data, loading: false });
   }
-}
+}*/

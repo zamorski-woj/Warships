@@ -5,7 +5,6 @@ namespace TestWarships
 {
     public class PlayerCreationUnitTests
     {
-
         [Fact]
         public void CreateTwoPlayers_ShouldHaveProperOwnersOfMaps()
         {
@@ -14,11 +13,7 @@ namespace TestWarships
             map.owner.Should().Be(players.Item1);
             Map map2 = players.Item2.map;
             map2.owner.Should().Be(players.Item2);
-
-
         }
-
-
     }
 }
 

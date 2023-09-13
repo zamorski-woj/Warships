@@ -1,5 +1,4 @@
-﻿using Warships;
-using static Warships.WarshipsGame;
+﻿using static Warships.WarshipsGame;
 
 namespace TestWarships
 {
@@ -16,7 +15,6 @@ namespace TestWarships
             players.Item1.fleet.Count.Should().Be(8);
             players.Item2.fleet.Count.Should().Be(8);
         }
-
 
         [Fact]
         public void GenerateFleet_ShouldGiveAsManyShipsAsRequested()

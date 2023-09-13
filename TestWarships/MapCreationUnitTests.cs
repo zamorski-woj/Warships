@@ -6,7 +6,6 @@ namespace TestWarships
 {
     public class MapCreationUnitTests
     {
-
         [Theory]
         [InlineData(3)]
         [InlineData(5)]

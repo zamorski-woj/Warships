@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualBasic;
-
-namespace Warships
+﻿namespace Warships
 {
     public class Map
     {

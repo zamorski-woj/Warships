@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using static Warships.WarshipsGame;
-
-
-namespace Warships
+﻿namespace Warships
 {
     public class Ship
     {

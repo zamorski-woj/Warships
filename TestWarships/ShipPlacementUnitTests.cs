@@ -15,7 +15,7 @@ namespace TestWarships
         public void CanPlaceShip_ShouldReturnTrue(int x, int y, Direction direction, int length)
         {
             Tuple<Map, Map> bothMaps = CreateMaps(5, CellType.Water);
-            Ship ship = new(length, direction, new Tuple<int, int>(x,y));
+            Ship ship = new(length, direction, new Tuple<int, int>(x, y));
             bothMaps.Item1.CanPlaceShip(ship).Should().BeTrue();
             bothMaps.Item2.CanPlaceShip(ship).Should().BeTrue();
         }
@@ -42,10 +42,10 @@ namespace TestWarships
         {
             Tuple<Map, Map> bothMaps = CreateMaps(5, CellType.Water);
             Ship ship = new(length, direction, new Tuple<int, int>(x, y));
-            bothMaps.Item1.CanPlaceShip( ship).Should().BeTrue();
+            bothMaps.Item1.CanPlaceShip(ship).Should().BeTrue();
             bothMaps.Item1.PlaceShip(ship);
             bothMaps.Item1.CanPlaceShip(ship).Should().BeFalse();
-        }  
+        }
 
         [Theory]
         [InlineData(0, 0, Direction.South, 2)]
@@ -60,8 +60,5 @@ namespace TestWarships
             bothMaps.Item1.CanPlaceShip(ship).Should().BeFalse();
             bothMaps.Item2.CanPlaceShip(ship).Should().BeFalse();
         }
-
-      
-
     }
 }

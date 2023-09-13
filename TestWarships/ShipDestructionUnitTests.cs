@@ -1,5 +1,4 @@
-﻿
-using Warships;
+﻿using Warships;
 using static Warships.WarshipsGame;
 
 

@@ -1,5 +1,4 @@
-﻿using Warships;
-using static Warships.NPC;
+﻿using static Warships.NPC;
 
 namespace TestWarships
 {

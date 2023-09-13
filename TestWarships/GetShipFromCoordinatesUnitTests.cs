@@ -1,5 +1,4 @@
 ﻿using Warships;
-
 using static Warships.WarshipsGame;
 
 namespace TestWarships
@@ -23,7 +22,6 @@ namespace TestWarships
                 Ship ship1 = p1.GetShipFromCoordinates(coordinate);
                 ship1.Should().Be(ship);
             }
-
         }
     }
 }

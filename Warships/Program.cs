@@ -1,5 +1,3 @@
-using static Warships.WarshipsGame;
-
 namespace Warships
 {
     public class Program
@@ -31,9 +29,6 @@ namespace Warships
                 pattern: "{controller}/{action=Index}/{id?}");
 
             app.MapFallbackToFile("index.html");
-
-
-
 
             var task = Task.Run(() => WarshipsConsole.Menu());//run console and web simultanously
             app.Run();

@@ -1,5 +1,4 @@
 ﻿using Warships;
-using static Warships.WarshipsGame;
 
 namespace TestWarships
 {
@@ -26,6 +25,5 @@ namespace TestWarships
             coordinates[1].Should().Be(new Tuple<int, int>(1, 4));
             coordinates[2].Should().Be(new Tuple<int, int>(2, 4));
         }
-
     }
 }

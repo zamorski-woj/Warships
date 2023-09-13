@@ -60,7 +60,6 @@ namespace Warships
             return Tuple.Create(firstMap, secondMap);
         }
 
-
         public static CellType Shoot(Map map, Tuple<int, int> coordinates)
         {
             int x = coordinates.Item1;
@@ -72,7 +71,7 @@ namespace Warships
                     map.grid[x, y] = CellType.Hit;
                     return CheckIfSunken(map, coordinates);
                 }
-                if ( map.grid[x, y] == CellType.Sunken)
+                if (map.grid[x, y] == CellType.Sunken)
                 {
                     return CheckIfSunken(map, coordinates);
                 }
@@ -83,7 +82,6 @@ namespace Warships
             }
             else
             {
-
                 throw new ArgumentOutOfRangeException(nameof(coordinates));
             }
         }
@@ -126,5 +124,3 @@ namespace Warships
         }
     }
 }
-
-

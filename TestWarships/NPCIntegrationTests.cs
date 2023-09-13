@@ -1,11 +1,6 @@
 ﻿using Warships;
-using static Warships.WarshipsGame;
-using static Warships.WarshipsConsole;
 using static Warships.NPC;
-using static Warships.Map;
-using static Warships.Player;
-using Microsoft.VisualBasic;
-using Xunit.Sdk;
+using static Warships.WarshipsGame;
 
 namespace TestWarships
 {

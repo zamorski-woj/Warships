@@ -1,5 +1,5 @@
-﻿using static Warships.WarshipsGame;
-using static Warships.WarshipsConsole;
+﻿using static Warships.WarshipsConsole;
+using static Warships.WarshipsGame;
 
 namespace Warships
 {

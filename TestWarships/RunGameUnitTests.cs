@@ -14,6 +14,5 @@ namespace TestWarships
             p.opponent.FleetStillAlive().Should().BeFalse();
             p.FleetStillAlive().Should().BeTrue();
         }
-
     }
 }

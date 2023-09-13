@@ -4,7 +4,31 @@ import React, { Component } from 'react';
 export class Home extends Component {
     static displayName = Home.name;
 
+
+    constructor(props) {
+        super(props);
+        this.state = { move: "a", loading: true };
+    }
+
+    componentDidMount() {
+        this.GetMove();
+    }
+
+    static renderMove(move) {
+        return (
+            <div>
+                <h2>{move}</h2>
+
+            </div>
+        );
+    }
+
+
     render() {
+        let contents = this.state.loading
+            ? <p><em>Loading...</em></p>
+            : Home.renderMove(this.state.move);
+
         return (
             <div>
                 <h1>Ahoy!</h1>
@@ -17,26 +41,39 @@ export class Home extends Component {
                     </li>
                 </ul>
                 <div>
-                    <button onClick={(e) => {
-                        this.ButtonStart(e, 0);
-                    }}
-                    >Computer vs Computer</button>
-                    <button onClick={(e) => {
-                        this.ButtonStart(e, 1);
-                    }}>Human vs Computer</button>
-                    <button onClick={(e) => {
-                        this.ButtonStart(e, 2);
-                    }}>Human vs Human</button>
+                    <button onClick={NPCvsNPC}>Computer vs Computer</button>
+                    <button onClick={PvsNPC}>Human vs Computer</button>
+                    <button onClick={PvP}>Human vs Human</button>
 
                 </div>
+
+                {contents}
             </div>
         );
+
+       
     }
+
+
+
+    async GetMove() {
+
+        const response = await fetch('player');
+        const data = await response.json();
+
+        this.setState({ move: data, loading: false });
+    }
+
+ /*   
+*/
 
 }
 
+function NPCvsNPC(event, humans) {
+}
+function PvsNPC(event, humans) {
 
-function ButtonStart(event, humans)
-{
-    
+}
+function PvP(event, humans) {
+
 }

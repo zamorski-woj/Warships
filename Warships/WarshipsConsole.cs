@@ -1,9 +1,6 @@
-﻿using System;
-using System.ComponentModel;
-using System.Drawing;
-using System.Text.RegularExpressions;
-using static Warships.WarshipsGame;
+﻿using System.Text.RegularExpressions;
 using static Warships.NPC;
+using static Warships.WarshipsGame;
 
 namespace Warships
 {
@@ -68,7 +65,6 @@ namespace Warships
                         PlayOneTurn(p2, p1);
                         break;
                 }
-
             }
             if (p1.FleetStillAlive())
             {

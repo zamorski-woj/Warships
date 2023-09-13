@@ -1,20 +1,17 @@
 ﻿using Warships;
 using static Warships.WarshipsGame;
 
-
 namespace TestWarships
 {
     public class FleetStillAliveUnitTests
     {
-
-        
-            [Fact]
-            public void FleetStillAlive_ShouldReturnFalseWhenEmpty()
-            {
+        [Fact]
+        public void FleetStillAlive_ShouldReturnFalseWhenEmpty()
+        {
             var players = CreateTwoPlayers();
             players.Item1.FleetStillAlive().Should().BeFalse();
             players.Item2.FleetStillAlive().Should().BeFalse();
-             }
+        }
 
         [Theory]
         [InlineData(0, 0, Direction.South, 1)]
@@ -31,9 +28,7 @@ namespace TestWarships
             players.Item2.FleetStillAlive().Should().BeFalse();
             players.Item2.map.PlaceShip(ship);
             players.Item2.FleetStillAlive().Should().BeTrue();
-
         }
     }
-
 }
 
