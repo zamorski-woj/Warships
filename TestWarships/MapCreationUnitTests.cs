@@ -1,7 +1,6 @@
 ﻿using Warships;
 using static Warships.WarshipsGame;
 
-
 namespace TestWarships
 {
     public class MapCreationUnitTests
@@ -13,15 +12,15 @@ namespace TestWarships
         [InlineData(10)]
         public void CreateMaps_ShouldHaveProperDimiensions(int size)
         {
-            Tuple<Player, Player > players= CreateTwoPlayers("name", "name", size);
-            Tuple<Map, Map>  bothMaps = new(players.Item1.Map, players.Item2.Map);
+            Tuple<Player, Player> players = CreateTwoPlayers("name", "name", size);
+            Tuple<Map, Map> bothMaps = new(players.Item1.Map, players.Item2.Map);
             bothMaps.Item1.Grid.Length.Should().Be(size * size);
             bothMaps.Item2.Grid.Length.Should().Be(size * size);
             bothMaps.Item1.Grid.GetLength(0).Should().Be(size);
             bothMaps.Item2.Grid.GetLength(0).Should().Be(size);
             bothMaps.Item1.Grid.GetLength(1).Should().Be(size);
             bothMaps.Item2.Grid.GetLength(1).Should().Be(size);
-        } 
+        }
 
         [Theory]
         [InlineData(-5)]

@@ -12,7 +12,7 @@ namespace TestWarships
         public void GetCoordinates_ShouldGiveAllPositions(int x, int y, Direction direction, int length)
         {
             Ship ship = new(length, direction, new Tuple<int, int>(x, y));
-            List<Tuple<int, int>> coordinates =  ship.GetCoordinates();
+            List<Tuple<int, int>> coordinates = ship.GetCoordinates();
             coordinates.Count.Should().Be(length);
         }
 

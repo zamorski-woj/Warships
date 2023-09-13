@@ -4,7 +4,6 @@ namespace TestWarships
 {
     public class StringFromCoordinatesUnitTest
     {
-
         [Theory]
         [InlineData(0, 0, "a0")]
         [InlineData(0, 4, "a4")]

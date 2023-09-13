@@ -1,12 +1,10 @@
 ﻿using Warships;
 using static Warships.WarshipsGame;
 
-
 namespace TestWarships
 {
     public class ShipPlacementUnitTests
     {
-
         [Theory]
         [InlineData(0, 0, Direction.South, 1)]
         [InlineData(0, 4, Direction.East, 3)]

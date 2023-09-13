@@ -5,7 +5,6 @@ namespace Warships
 {
     public static class NPC
     {
-
         public static Tuple<int, int> PlayAutomaticTurn(Player player, Player opponent, bool showNPC = true)
         {
             Tuple<int, int> whereToShoot = ChooseWhereToShoot(player.EnemyMap);
@@ -80,6 +79,7 @@ namespace Warships
                             weight[i, j] -= 999;
                             weight = ChangeNeighbouring(weight, i, j, -5);
                             break;
+
                         default:
                         case CellType.Water:
                             weight[i, j] -= 999;
@@ -90,7 +90,6 @@ namespace Warships
 
             double maxValue = weight.Cast<double>().Max();
             return IndexOf(weight, maxValue);
-
         }
 
         private static void PredictLines(Map map, double[,] weight, int x, int y)//we know xy was hit
@@ -107,10 +106,12 @@ namespace Warships
                 {
                     case CellType.Hit:
                         break;
+
                     case CellType.Unknown:
                         weight[i, y] += 100;
                         endloop = true;
                         break;
+
                     default:
                         endloop = true;
                         break;
@@ -127,10 +128,12 @@ namespace Warships
                 {
                     case CellType.Hit:
                         break;
+
                     case CellType.Unknown:
                         weight[i, y] += 100;
                         endloop = true;
                         break;
+
                     default:
                         endloop = true;
                         break;
@@ -147,10 +150,12 @@ namespace Warships
                 {
                     case CellType.Hit:
                         break;
+
                     case CellType.Unknown:
                         weight[x, j] += 100;
                         endloop = true;
                         break;
+
                     default:
                         endloop = true;
                         break;
@@ -167,15 +172,16 @@ namespace Warships
                 {
                     case CellType.Hit:
                         break;
+
                     case CellType.Unknown:
                         weight[x, j] += 100;
                         endloop = true;
                         break;
+
                     default:
                         endloop = true;
                         break;
                 }
-
             }
         }
 
@@ -192,7 +198,6 @@ namespace Warships
                         return new Tuple<int, int>(i, j);
                     }
                 }
-
             }
             return new Tuple<int, int>(0, 0);
         }
@@ -217,6 +222,5 @@ namespace Warships
             }
             return array;
         }
-
     }
 }

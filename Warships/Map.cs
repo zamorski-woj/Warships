@@ -10,6 +10,7 @@
             Grid = new CellType[size, size];
             Owner = p;
         }
+
         public Map(int size = 10)
         {
             Grid = new CellType[size, size];
@@ -26,6 +27,7 @@
                 }
             }
         }
+
         public bool IsOnMap(Tuple<int, int> coordinates)
         {
             int mapSize = (int)Math.Sqrt(this.Grid.Length);
@@ -41,7 +43,6 @@
 
         public void PlaceShip(Ship ship)
         {
-
             if (this.CanPlaceShip(ship))
             {
                 List<Tuple<int, int>> shipCoordinates = ship.GetCoordinates();
@@ -62,8 +63,6 @@
 
         public bool CanPlaceShip(Ship ship)
         {
-
-
             List<Tuple<int, int>> shipCoordinates = ship.GetCoordinates();
 
             foreach (var coord in shipCoordinates)
@@ -75,7 +74,6 @@
             }
             return true;
         }
-
 
         public bool Occupied(Tuple<int, int> coord)
         {
@@ -94,11 +92,9 @@
             }
         }
 
-
         internal void PlotOutcome(Tuple<int, int> whereToShoot, CellType outcome)
         {
             Grid[whereToShoot.Item1, whereToShoot.Item2] = outcome;
         }
     }
-
 }

@@ -1,6 +1,5 @@
 ﻿namespace Warships
 {
-
     public enum CellType
     {
         Unknown,

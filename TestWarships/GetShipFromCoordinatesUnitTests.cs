@@ -17,7 +17,7 @@ namespace TestWarships
             ShipInRandomPosition(p1.Map, 3);
 
             List<Tuple<int, int>> coordinates = new() { new Tuple<int, int>(0, 4), new Tuple<int, int>(1, 4), new Tuple<int, int>(2, 4) };
-           foreach (var coordinate in coordinates)
+            foreach (var coordinate in coordinates)
             {
                 Ship ship1 = p1.GetShipFromCoordinates(coordinate);
                 ship1.Should().Be(ship);

@@ -23,7 +23,6 @@ namespace Warships
             app.UseStaticFiles();
             app.UseRouting();
 
-
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller}/{action=Index}/{id?}");
@@ -32,8 +31,6 @@ namespace Warships
 
             var task = Task.Run(() => WarshipsConsole.Menu());//run console and web simultanously
             app.Run();
-
         }
-
     }
 }

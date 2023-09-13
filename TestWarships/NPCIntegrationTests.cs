@@ -84,7 +84,7 @@ namespace TestWarships
             };
             foreach (Tuple<int, int> move in moves)
             {
-                if(move.Item1 ==x)//same row
+                if (move.Item1 == x)//same row
                 {
                     Math.Abs(move.Item2 - y).Should().Be(1);
                 }
@@ -93,7 +93,6 @@ namespace TestWarships
                     Math.Abs(move.Item1 - x).Should().Be(1);
                 }
             }
-
         }
     }
 }

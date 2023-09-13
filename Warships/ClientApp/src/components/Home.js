@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 
-
 export class Home extends Component {
     static displayName = Home.name;
-
 
     constructor(props) {
         super(props);
@@ -22,7 +20,6 @@ export class Home extends Component {
             </div>
         );
     }
-
 
     render() {
         let contents = this.state.loading
@@ -50,30 +47,22 @@ export class Home extends Component {
                 {contents}
             </div>
         );
-
-       
     }
 
-
-
     async GetMove() {
-
         const response = await fetch('Player');
         const data = await response.json();
 
         this.setState({ move: data, loading: false });
     }
 
- /*   
-*/
-
+    /*
+   */
 }
 
 function NPCvsNPC(event, humans) {
 }
 function PvsNPC(event, humans) {
-
 }
 function PvP(event, humans) {
-
 }

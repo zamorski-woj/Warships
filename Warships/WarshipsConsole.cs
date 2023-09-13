@@ -8,9 +8,9 @@ namespace Warships
     {
         public static void Menu()
         {
-            int numberOfPlayers=2;
+            int numberOfPlayers = 2;
             string? decision = null;
-            while(decision == null)
+            while (decision == null)
             {
                 Console.WriteLine("How many human players? 0, 1 or 2?");
                 decision = Console.ReadKey().KeyChar.ToString();
@@ -18,7 +18,7 @@ namespace Warships
                 {
                     numberOfPlayers = int.Parse(decision);
                 }
-                catch(FormatException f)
+                catch (FormatException f)
                 {
                     continue;//with default 2
                 }
@@ -31,16 +31,14 @@ namespace Warships
             string name2 = Console.ReadLine() ?? "Antyfilidor";
             Console.Clear();
 
-            Player p =RunGame(numberOfPlayers, true, name1, name2);
+            Player p = RunGame(numberOfPlayers, true, name1, name2);
             Console.WriteLine(p.Name + " won!");
             Console.ReadLine();
             Console.Clear();
-
         }
 
         public static Player RunGame(int numberOfPlayers, bool showNPC = true, string name1 = "Ewaryst", string name2 = "Antyfilidor")
         {
-            
             Tuple<Player, Player> bothPlayers = CreateTwoPlayers(name1, name2, 10);
             Player p1 = bothPlayers.Item1;
             Player p2 = bothPlayers.Item2;
@@ -55,10 +53,12 @@ namespace Warships
                         PlayAutomaticTurn(p1, p2, showNPC);
                         PlayAutomaticTurn(p2, p1, showNPC);
                         break;
+
                     case 1:
                         PlayOneTurn(p1, p2);
                         PlayAutomaticTurn(p2, p1, showNPC);
                         break;
+
                     case 2:
                     default:
                         PlayOneTurn(p1, p2);
@@ -113,7 +113,7 @@ namespace Warships
                 _ => "Did you enter right coordinates?",
             };
         }
-      
+
         private static bool NotValidOrder(string order)
         {
             if (Regex.IsMatch(order, @"^[a-jA-J][0-9]$") || Regex.IsMatch(order, @"^[0-9][a-jA-J]$"))
@@ -162,7 +162,6 @@ namespace Warships
 
         private static void ShowBothMaps(Player p)
         {
-
             Console.WriteLine("Your map");
             ShowMap(p.Map, p.Opponent.LastMove);
 
@@ -192,16 +191,18 @@ namespace Warships
                         case CellType.Unknown:
                             Console.Write("?");
                             break;
+
                         case CellType.Water:
                             Console.BackgroundColor = ConsoleColor.Cyan;
                             Console.ForegroundColor = ConsoleColor.DarkBlue;
-                            if(lastMove.Item1==i && lastMove.Item2==j)
+                            if (lastMove.Item1 == i && lastMove.Item2 == j)
                             {
                                 Console.BackgroundColor = ConsoleColor.Yellow;
                             }
                             Console.Write("~");
                             Console.ResetColor();
                             break;
+
                         case CellType.Ship:
                             Console.BackgroundColor = ConsoleColor.Cyan;
                             Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -212,6 +213,7 @@ namespace Warships
                             Console.Write("O");
                             Console.ResetColor();
                             break;
+
                         case CellType.Hit:
                             Console.BackgroundColor = ConsoleColor.Cyan;
                             Console.ForegroundColor = ConsoleColor.DarkRed;
@@ -222,6 +224,7 @@ namespace Warships
                             Console.Write("*");
                             Console.ResetColor();
                             break;
+
                         case CellType.Sunken:
                             Console.BackgroundColor = ConsoleColor.Cyan;
                             Console.ForegroundColor = ConsoleColor.DarkRed;

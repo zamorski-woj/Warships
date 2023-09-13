@@ -24,28 +24,27 @@
                     for (int i = 0; i < this.Length; i++)
                     {
                         allCoordinates.Add(new Tuple<int, int>(xCoordinate, yCoordinate + i));
-
                     }
                     break;
+
                 case Direction.East:
                     for (int i = 0; i < this.Length; i++)
                     {
                         allCoordinates.Add(new Tuple<int, int>(xCoordinate + i, yCoordinate));
-
                     }
                     break;
+
                 case Direction.South:
                     for (int i = 0; i < this.Length; i++)
                     {
                         allCoordinates.Add(new Tuple<int, int>(xCoordinate, yCoordinate - i));
-
                     }
                     break;
+
                 case Direction.West:
                     for (int i = 0; i < this.Length; i++)
                     {
                         allCoordinates.Add(new Tuple<int, int>(xCoordinate - i, yCoordinate));
-
                     }
                     break;
             }
@@ -88,8 +87,6 @@
             this.Destroy(map);
             this.Destroy(map.Owner.Opponent.EnemyMap);
             return CellType.Sunken;//He`s dead, Jim.
-
         }
     }
 }
-
