@@ -2,33 +2,33 @@
 {
     public class Map
     {
-        public CellType[,] grid;
-        public Player owner;
+        public CellType[,] Grid { get; set; }
+        public Player Owner { get; set; }
 
         public Map(Player p, int size)
         {
-            grid = new CellType[size, size];
-            owner = p;
+            Grid = new CellType[size, size];
+            Owner = p;
         }
         public Map(int size = 10)
         {
-            grid = new CellType[size, size];
-            owner = new Player("Ziutek");
+            Grid = new CellType[size, size];
+            Owner = new Player("Ziutek");
         }
 
         public void FillWith(CellType cellType)
         {
-            for (int i = 0; i < (int)Math.Sqrt(grid.Length); i++)
+            for (int i = 0; i < (int)Math.Sqrt(Grid.Length); i++)
             {
-                for (int j = 0; j < (int)Math.Sqrt(grid.Length); j++)
+                for (int j = 0; j < (int)Math.Sqrt(Grid.Length); j++)
                 {
-                    grid.SetValue(cellType, i, j);
+                    Grid.SetValue(cellType, i, j);
                 }
             }
         }
         public bool IsOnMap(Tuple<int, int> coordinates)
         {
-            int mapSize = (int)Math.Sqrt(this.grid.Length);
+            int mapSize = (int)Math.Sqrt(this.Grid.Length);
             int xCoordinate = coordinates.Item1;
             int yCoordinate = coordinates.Item2;
 
@@ -48,9 +48,9 @@
 
                 foreach (var coord in shipCoordinates)
                 {
-                    this.grid[coord.Item1, coord.Item2] = CellType.Ship;
+                    this.Grid[coord.Item1, coord.Item2] = CellType.Ship;
                 }
-                this.owner?.fleet.Add(ship);
+                this.Owner?.Fleet.Add(ship);
             }
         }
 
@@ -90,14 +90,14 @@
             }
             else
             {
-                return (grid[xCoordinate, yCoordinate] != CellType.Water && grid[xCoordinate, yCoordinate] != CellType.Unknown);
+                return (Grid[xCoordinate, yCoordinate] != CellType.Water && Grid[xCoordinate, yCoordinate] != CellType.Unknown);
             }
         }
 
 
         internal void PlotOutcome(Tuple<int, int> whereToShoot, CellType outcome)
         {
-            grid[whereToShoot.Item1, whereToShoot.Item2] = outcome;
+            Grid[whereToShoot.Item1, whereToShoot.Item2] = outcome;
         }
     }
 

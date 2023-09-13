@@ -21,12 +21,12 @@ namespace TestWarships
         public void FleetStillAlive_ShouldReturnTrueWhenAtLeastOneShip(int x, int y, Direction direction, int length)
         {
             var players = CreateTwoPlayers();
-            Map map = players.Item1.map;
+            Map map = players.Item1.Map;
             Ship ship = new(length, direction, new Tuple<int, int>(x, y));
             map.PlaceShip(ship);
             players.Item1.FleetStillAlive().Should().BeTrue();
             players.Item2.FleetStillAlive().Should().BeFalse();
-            players.Item2.map.PlaceShip(ship);
+            players.Item2.Map.PlaceShip(ship);
             players.Item2.FleetStillAlive().Should().BeTrue();
         }
     }

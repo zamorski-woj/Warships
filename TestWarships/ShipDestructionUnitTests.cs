@@ -15,7 +15,7 @@ namespace TestWarships
         public void Destroy_ShouldSinkCells(int x, int y, Direction direction, int length)
         {
             Tuple<Player, Player> bothPlayers = CreateTwoPlayers();
-            Tuple<Map, Map> bothMaps = new(bothPlayers.Item1.map, bothPlayers.Item2.map);
+            Tuple<Map, Map> bothMaps = new(bothPlayers.Item1.Map, bothPlayers.Item2.Map);
             Ship ship = new(length, direction, new(x, y));
             bothMaps.Item1.PlaceShip(ship);
 
@@ -23,7 +23,7 @@ namespace TestWarships
             List<Tuple<int, int>> coordinates = ship.GetCoordinates();
             foreach (Tuple<int, int> c in coordinates)
             {
-                bothMaps.Item1.grid[c.Item1, c.Item2].Should().Be(CellType.Sunken);
+                bothMaps.Item1.Grid[c.Item1, c.Item2].Should().Be(CellType.Sunken);
             }
         }
 
@@ -35,7 +35,7 @@ namespace TestWarships
         public void ShootingShip_ShouldDestroyIt(int x, int y, Direction direction, int length)
         {
             Tuple<Player, Player> players = CreateTwoPlayers(10);
-            Map map = players.Item1.map;
+            Map map = players.Item1.Map;
             Ship ship = new(length, direction, new Tuple<int, int>(x, y));
             map.PlaceShip(ship);
 
@@ -47,7 +47,7 @@ namespace TestWarships
             }
             foreach (Tuple<int, int> c in coordinates)
             {
-                map.grid[c.Item1, c.Item2].Should().Be(CellType.Sunken);
+                map.Grid[c.Item1, c.Item2].Should().Be(CellType.Sunken);
             }
             ship.sunken.Should().BeTrue();
         }
@@ -60,7 +60,7 @@ namespace TestWarships
         public void ShootingShip_ShouldDealDamage(int x, int y, Direction direction, int length)
         {
             Tuple<Player, Player> players = CreateTwoPlayers(10);
-            Map map = players.Item1.map;
+            Map map = players.Item1.Map;
             Ship ship = new(length, direction, new Tuple<int, int>(x, y));
             List<Tuple<int, int>> coordinates = ship.GetCoordinates();
 
@@ -68,28 +68,28 @@ namespace TestWarships
 
             foreach (Tuple<int, int> whereToShoot in coordinates)
             {
-                if (whereToShoot.Item1 == ship.mainCoordinate.Item1 && whereToShoot.Item2 == ship.mainCoordinate.Item2)
+                if (whereToShoot.Item1 == ship.MainCoordinate.Item1 && whereToShoot.Item2 == ship.MainCoordinate.Item2)
                 {
                     continue;//skip not to destroy it completely
                 }
                 else
                 {
-                    map.grid[whereToShoot.Item1, whereToShoot.Item2].Should().Be(CellType.Ship);
+                    map.Grid[whereToShoot.Item1, whereToShoot.Item2].Should().Be(CellType.Ship);
                     Shoot(map, whereToShoot);
-                    map.grid[whereToShoot.Item1, whereToShoot.Item2].Should().Be(CellType.Hit);
+                    map.Grid[whereToShoot.Item1, whereToShoot.Item2].Should().Be(CellType.Hit);
                 }
             }
             foreach (Tuple<int, int> c in coordinates)
             {
-                if (c.Item1 == ship.mainCoordinate.Item1 && c.Item2 == ship.mainCoordinate.Item2)
+                if (c.Item1 == ship.MainCoordinate.Item1 && c.Item2 == ship.MainCoordinate.Item2)
                 {
-                    map.grid[c.Item1, c.Item2].Should().Be(CellType.Ship);
+                    map.Grid[c.Item1, c.Item2].Should().Be(CellType.Ship);
 
                     continue;
                 }
                 else
                 {
-                    map.grid[c.Item1, c.Item2].Should().Be(CellType.Hit);
+                    map.Grid[c.Item1, c.Item2].Should().Be(CellType.Hit);
                 }
             }
             ship.sunken.Should().BeFalse();

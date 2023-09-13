@@ -2,47 +2,47 @@
 {
     public class Ship
     {
-        public int length;
-        public Direction heading;
-        public Tuple<int, int> mainCoordinate;
-        public bool sunken = false;
+        public int Length { get; set; }
+        public Direction Heading { get; set; }
+        public Tuple<int, int> MainCoordinate { get; set; }
+        public bool sunken { get; set; } = false;
 
         public Ship(int length, Direction heading, Tuple<int, int> mainCoordinate)//manually
         {
-            this.length = length;
-            this.heading = heading;
-            this.mainCoordinate = mainCoordinate;
+            this.Length = length;
+            this.Heading = heading;
+            this.MainCoordinate = mainCoordinate;
         }
 
         public List<Tuple<int, int>> GetCoordinates()
         {
             List<Tuple<int, int>> allCoordinates = new();
-            int xCoordinate = this.mainCoordinate.Item1, yCoordinate = this.mainCoordinate.Item2;
-            switch (this.heading)
+            int xCoordinate = this.MainCoordinate.Item1, yCoordinate = this.MainCoordinate.Item2;
+            switch (this.Heading)
             {
                 case Direction.North:
-                    for (int i = 0; i < this.length; i++)
+                    for (int i = 0; i < this.Length; i++)
                     {
                         allCoordinates.Add(new Tuple<int, int>(xCoordinate, yCoordinate + i));
 
                     }
                     break;
                 case Direction.East:
-                    for (int i = 0; i < this.length; i++)
+                    for (int i = 0; i < this.Length; i++)
                     {
                         allCoordinates.Add(new Tuple<int, int>(xCoordinate + i, yCoordinate));
 
                     }
                     break;
                 case Direction.South:
-                    for (int i = 0; i < this.length; i++)
+                    for (int i = 0; i < this.Length; i++)
                     {
                         allCoordinates.Add(new Tuple<int, int>(xCoordinate, yCoordinate - i));
 
                     }
                     break;
                 case Direction.West:
-                    for (int i = 0; i < this.length; i++)
+                    for (int i = 0; i < this.Length; i++)
                     {
                         allCoordinates.Add(new Tuple<int, int>(xCoordinate - i, yCoordinate));
 
@@ -57,7 +57,7 @@
             var coordinates = this.GetCoordinates();
             foreach (var coordinate in coordinates)
             {
-                map.grid[coordinate.Item1, coordinate.Item2] = CellType.Sunken;
+                map.Grid[coordinate.Item1, coordinate.Item2] = CellType.Sunken;
             }
             this.sunken = true;
         }
@@ -80,14 +80,14 @@
             var coordinates = GetCoordinates();
             foreach (var coordinate in coordinates)
             {
-                if (map.grid[coordinate.Item1, coordinate.Item2] == CellType.Ship)
+                if (map.Grid[coordinate.Item1, coordinate.Item2] == CellType.Ship)
                 {
                     return CellType.Hit;//that means it is alive
                 }
             }
             this.Destroy(map);
-            this.Destroy(map.owner.opponent.enemyMap);
-            return CellType.Sunken;//that means it is dead
+            this.Destroy(map.Owner.Opponent.EnemyMap);
+            return CellType.Sunken;//He`s dead, Jim.
 
         }
     }

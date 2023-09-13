@@ -32,7 +32,7 @@ namespace Warships
             Console.Clear();
 
             Player p =RunGame(numberOfPlayers, true, name1, name2);
-            Console.WriteLine(p.name + " won!");
+            Console.WriteLine(p.Name + " won!");
             Console.ReadLine();
             Console.Clear();
 
@@ -79,7 +79,7 @@ namespace Warships
         private static void PlayOneTurn(Player player, Player opponent)
         {
             Console.Clear();
-            Console.WriteLine(player.name + "'s turn. Press any Key");
+            Console.WriteLine(player.Name + "'s turn. Press any Key");
             Console.ReadKey();
 
             string? order = null;
@@ -87,13 +87,13 @@ namespace Warships
             {
                 Console.Clear();
                 ShowBothMaps(player);
-                Console.WriteLine("Your orders, Admiral " + player.name + "?");
+                Console.WriteLine("Your orders, Admiral " + player.Name + "?");
                 order = Console.ReadLine();
             }
             Tuple<int, int> whereToShoot = CoordinatesFromString(order);
-            CellType outcome = Shoot(opponent.map, whereToShoot);
-            player.lastMove = whereToShoot;
-            player.enemyMap.PlotOutcome(whereToShoot, outcome);
+            CellType outcome = Shoot(opponent.Map, whereToShoot);
+            player.LastMove = whereToShoot;
+            player.EnemyMap.PlotOutcome(whereToShoot, outcome);
             Console.Clear();
             ShowBothMaps(player);
             Console.WriteLine(OutcomeToString(outcome));
@@ -164,16 +164,16 @@ namespace Warships
         {
 
             Console.WriteLine("Your map");
-            ShowMap(p.map, p.opponent.lastMove);
+            ShowMap(p.Map, p.Opponent.LastMove);
 
             Console.WriteLine("Enemy map");
-            ShowMap(p.enemyMap, p.lastMove);
+            ShowMap(p.EnemyMap, p.LastMove);
         }
 
         public static void ShowMap(Map m, Tuple<int, int>? lastMove = null)
         {
             lastMove ??= new Tuple<int, int>(-1, -1);
-            int mapSize = m.grid.GetLength(0);
+            int mapSize = m.Grid.GetLength(0);
             Console.BackgroundColor = ConsoleColor.White;
             Console.ForegroundColor = ConsoleColor.Black;
             Console.WriteLine(" ABCDEFGHIJ");
@@ -187,7 +187,7 @@ namespace Warships
 
                 for (int i = 0; i < mapSize; i++)
                 {
-                    switch (m.grid[i, j])
+                    switch (m.Grid[i, j])
                     {
                         case CellType.Unknown:
                             Console.Write("?");

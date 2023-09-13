@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-namespace Warships
+﻿namespace Warships
 {
 
     public enum CellType
@@ -34,12 +32,12 @@ namespace Warships
             Tuple<Map, Map> maps = CreateMaps(size, CellType.Water, player, player2);
             Tuple<Map, Map> Enemymaps = CreateMaps(size, CellType.Unknown, player, player2);
 
-            player.map = maps.Item1;
-            player2.map = maps.Item2;
-            player.enemyMap = Enemymaps.Item1;
-            player2.enemyMap = Enemymaps.Item2;
-            player.opponent = player2;
-            player2.opponent = player;
+            player.Map = maps.Item1;
+            player2.Map = maps.Item2;
+            player.EnemyMap = Enemymaps.Item1;
+            player2.EnemyMap = Enemymaps.Item2;
+            player.Opponent = player2;
+            player2.Opponent = player;
             return new Tuple<Player, Player>(player, player2);
         }
 
@@ -66,12 +64,12 @@ namespace Warships
             int y = coordinates.Item2;
             if (map.IsOnMap(coordinates))
             {
-                if (map.grid[x, y] == CellType.Ship || map.grid[x, y] == CellType.Hit)
+                if (map.Grid[x, y] == CellType.Ship || map.Grid[x, y] == CellType.Hit)
                 {
-                    map.grid[x, y] = CellType.Hit;
+                    map.Grid[x, y] = CellType.Hit;
                     return CheckIfSunken(map, coordinates);
                 }
-                if (map.grid[x, y] == CellType.Sunken)
+                if (map.Grid[x, y] == CellType.Sunken)
                 {
                     return CheckIfSunken(map, coordinates);
                 }
@@ -88,7 +86,7 @@ namespace Warships
 
         private static CellType CheckIfSunken(Map map, Tuple<int, int> where)
         {
-            Player mapOwner = map.owner;
+            Player mapOwner = map.Owner;
             Ship whatGotHit = mapOwner.GetShipFromCoordinates(where);
             if (whatGotHit != null)
             {
@@ -110,8 +108,8 @@ namespace Warships
 
             do
             {
-                xCoordinate = random.Next(0, (int)Math.Sqrt(map.grid.Length));
-                yCoordinate = random.Next(0, (int)Math.Sqrt(map.grid.Length));
+                xCoordinate = random.Next(0, (int)Math.Sqrt(map.Grid.Length));
+                yCoordinate = random.Next(0, (int)Math.Sqrt(map.Grid.Length));
                 direction = (Direction)random.Next(0, 4);
             }
             while (!map.CanPlaceShip(xCoordinate, yCoordinate, direction, length));

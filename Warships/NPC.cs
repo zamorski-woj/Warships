@@ -8,17 +8,17 @@ namespace Warships
 
         public static Tuple<int, int> PlayAutomaticTurn(Player player, Player opponent, bool showNPC = true)
         {
-            Tuple<int, int> whereToShoot = ChooseWhereToShoot(player.enemyMap);
-            CellType outcome = Shoot(opponent.map, whereToShoot);
-            player.enemyMap.PlotOutcome(whereToShoot, outcome);
-            player.lastMove = whereToShoot;
+            Tuple<int, int> whereToShoot = ChooseWhereToShoot(player.EnemyMap);
+            CellType outcome = Shoot(opponent.Map, whereToShoot);
+            player.EnemyMap.PlotOutcome(whereToShoot, outcome);
+            player.LastMove = whereToShoot;
 
             if (showNPC)
             {
                 Console.Clear();
-                Console.WriteLine("Admiral " + player.name + " shoots at " + StringFromCoordinates(whereToShoot));
+                Console.WriteLine("Admiral " + player.Name + " shoots at " + StringFromCoordinates(whereToShoot));
                 Console.WriteLine(OutcomeToString(outcome));
-                ShowMap(player.enemyMap, whereToShoot);
+                ShowMap(player.EnemyMap, whereToShoot);
                 Console.ReadKey();
                 Console.Clear();
             }
@@ -45,7 +45,7 @@ namespace Warships
         private static Tuple<int, int> ChooseWhereToShoot(Map enemyMap)
         {
             Random r = new();
-            int size = enemyMap.grid.GetLength(0);
+            int size = enemyMap.Grid.GetLength(0);
             double[,] weight = new double[size, size];
 
             for (int j = 0; j < size; j++)
@@ -59,7 +59,7 @@ namespace Warships
             {
                 for (int i = 0; i < size; i++)
                 {
-                    switch (enemyMap.grid[i, j])
+                    switch (enemyMap.Grid[i, j])
                     {
                         case CellType.Unknown:
                             weight[i, j] += 1;
@@ -95,7 +95,7 @@ namespace Warships
 
         private static void PredictLines(Map map, double[,] weight, int x, int y)//we know xy was hit
         {
-            int size = map.grid.GetLength(0);
+            int size = map.Grid.GetLength(0);
             bool endloop = false;//lets me break out of loop inside the switch. ambigous "break" keyword
             for (int i = x + 1; i < size; i++)
             {
@@ -103,7 +103,7 @@ namespace Warships
                 {
                     break;
                 }
-                switch (map.grid[i, y])
+                switch (map.Grid[i, y])
                 {
                     case CellType.Hit:
                         break;
@@ -123,7 +123,7 @@ namespace Warships
                 {
                     break;
                 }
-                switch (map.grid[i, y])
+                switch (map.Grid[i, y])
                 {
                     case CellType.Hit:
                         break;
@@ -143,7 +143,7 @@ namespace Warships
                 {
                     break;
                 }
-                switch (map.grid[x, j])
+                switch (map.Grid[x, j])
                 {
                     case CellType.Hit:
                         break;
@@ -163,7 +163,7 @@ namespace Warships
                 {
                     break;
                 }
-                switch (map.grid[x, j])
+                switch (map.Grid[x, j])
                 {
                     case CellType.Hit:
                         break;

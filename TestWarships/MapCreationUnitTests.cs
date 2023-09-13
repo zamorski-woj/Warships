@@ -14,13 +14,13 @@ namespace TestWarships
         public void CreateMaps_ShouldHaveProperDimiensions(int size)
         {
             Tuple<Player, Player > players= CreateTwoPlayers("name", "name", size);
-            Tuple<Map, Map>  bothMaps = new(players.Item1.map, players.Item2.map);
-            bothMaps.Item1.grid.Length.Should().Be(size * size);
-            bothMaps.Item2.grid.Length.Should().Be(size * size);
-            bothMaps.Item1.grid.GetLength(0).Should().Be(size);
-            bothMaps.Item2.grid.GetLength(0).Should().Be(size);
-            bothMaps.Item1.grid.GetLength(1).Should().Be(size);
-            bothMaps.Item2.grid.GetLength(1).Should().Be(size);
+            Tuple<Map, Map>  bothMaps = new(players.Item1.Map, players.Item2.Map);
+            bothMaps.Item1.Grid.Length.Should().Be(size * size);
+            bothMaps.Item2.Grid.Length.Should().Be(size * size);
+            bothMaps.Item1.Grid.GetLength(0).Should().Be(size);
+            bothMaps.Item2.Grid.GetLength(0).Should().Be(size);
+            bothMaps.Item1.Grid.GetLength(1).Should().Be(size);
+            bothMaps.Item2.Grid.GetLength(1).Should().Be(size);
         } 
 
         [Theory]
@@ -38,7 +38,7 @@ namespace TestWarships
         public void FillMaps_ShouldBeOfProperContent(CellType cellType)
         {
             Tuple<Map, Map> bothMaps = CreateMaps(4, cellType);
-            foreach (CellType cell in bothMaps.Item1.grid)
+            foreach (CellType cell in bothMaps.Item1.Grid)
             {
                 cell.Should().NotBe(null);
                 cell.Should().NotBe(CellType.Ship);

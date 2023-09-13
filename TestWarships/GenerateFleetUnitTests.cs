@@ -12,8 +12,8 @@ namespace TestWarships
             players.Item1.GenerateFleet(list);
             players.Item2.GenerateFleet(list);
 
-            players.Item1.fleet.Count.Should().Be(8);
-            players.Item2.fleet.Count.Should().Be(8);
+            players.Item1.Fleet.Count.Should().Be(8);
+            players.Item2.Fleet.Count.Should().Be(8);
         }
 
         [Fact]
@@ -24,8 +24,8 @@ namespace TestWarships
             players.Item1.GenerateFleet(list);
             players.Item2.GenerateFleet(list);
 
-            players.Item1.fleet.Count.Should().Be(12);
-            players.Item2.fleet.Count.Should().Be(12);
+            players.Item1.Fleet.Count.Should().Be(12);
+            players.Item2.Fleet.Count.Should().Be(12);
         }
     }
 }

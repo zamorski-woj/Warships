@@ -10,8 +10,8 @@ namespace TestWarships
         {
             Player p = RunGame(0, false, "Brajan", "Alan");
             p.Should().NotBe(null);
-            p.name.Length.Should().NotBe(0);
-            p.opponent.FleetStillAlive().Should().BeFalse();
+            p.Name.Length.Should().NotBe(0);
+            p.Opponent.FleetStillAlive().Should().BeFalse();
             p.FleetStillAlive().Should().BeTrue();
         }
     }

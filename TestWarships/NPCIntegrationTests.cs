@@ -19,7 +19,7 @@ namespace TestWarships
             Player p = bothPlayers.Item1;
             Player p2 = bothPlayers.Item2;
             Ship ship = new(1, Direction.North, new(x, y));
-            p.enemyMap.PlaceShip(ship);
+            p.EnemyMap.PlaceShip(ship);
             Tuple<int, int> move = PlayAutomaticTurn(p, p2, false);
             move.Item1.Should().Be(x);
             move.Item2.Should().Be(y);
@@ -36,8 +36,8 @@ namespace TestWarships
             Tuple<Player, Player> bothPlayers = CreateTwoPlayers();
             Player p = bothPlayers.Item1;
             Player p2 = bothPlayers.Item2;
-            p.enemyMap.FillWith(CellType.Sunken);
-            p.enemyMap.grid[x, y] = CellType.Unknown;
+            p.EnemyMap.FillWith(CellType.Sunken);
+            p.EnemyMap.Grid[x, y] = CellType.Unknown;
             Tuple<int, int> move = PlayAutomaticTurn(p, p2, false);
             move.Item1.Should().Be(x);
             move.Item2.Should().Be(y);
@@ -54,8 +54,8 @@ namespace TestWarships
             Tuple<Player, Player> bothPlayers = CreateTwoPlayers();
             Player p = bothPlayers.Item1;
             Player p2 = bothPlayers.Item2;
-            p.enemyMap.FillWith(CellType.Hit);
-            p.enemyMap.grid[x, y] = CellType.Unknown;
+            p.EnemyMap.FillWith(CellType.Hit);
+            p.EnemyMap.Grid[x, y] = CellType.Unknown;
             Tuple<int, int> move = PlayAutomaticTurn(p, p2, false);
             move.Item1.Should().Be(x);
             move.Item2.Should().Be(y);
@@ -74,7 +74,7 @@ namespace TestWarships
             Player p = bothPlayers.Item1;
             Player p2 = bothPlayers.Item2;
 
-            p.enemyMap.grid[x, y] = CellType.Hit;
+            p.EnemyMap.Grid[x, y] = CellType.Hit;
             List<Tuple<int, int>> moves = new()
             {
                 PlayAutomaticTurn(p, p2, false),

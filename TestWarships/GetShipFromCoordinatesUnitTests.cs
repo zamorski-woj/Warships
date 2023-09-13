@@ -10,11 +10,11 @@ namespace TestWarships
         {
             Player p1 = CreateTwoPlayers().Item1;
             Ship ship = new(3, Direction.East, new Tuple<int, int>(0, 4));
-            p1.map.PlaceShip(ship);
-            ShipInRandomPosition(p1.map, 4);
-            ShipInRandomPosition(p1.map, 5);
-            ShipInRandomPosition(p1.map, 6);
-            ShipInRandomPosition(p1.map, 3);
+            p1.Map.PlaceShip(ship);
+            ShipInRandomPosition(p1.Map, 4);
+            ShipInRandomPosition(p1.Map, 5);
+            ShipInRandomPosition(p1.Map, 6);
+            ShipInRandomPosition(p1.Map, 3);
 
             List<Tuple<int, int>> coordinates = new() { new Tuple<int, int>(0, 4), new Tuple<int, int>(1, 4), new Tuple<int, int>(2, 4) };
            foreach (var coordinate in coordinates)

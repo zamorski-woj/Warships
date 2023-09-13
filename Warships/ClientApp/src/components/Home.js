@@ -58,7 +58,7 @@ export class Home extends Component {
 
     async GetMove() {
 
-        const response = await fetch('player');
+        const response = await fetch('Player');
         const data = await response.json();
 
         this.setState({ move: data, loading: false });
