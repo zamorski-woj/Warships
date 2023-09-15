@@ -19,11 +19,11 @@
 
         public void FillWith(CellType cellType)
         {
-            for (int i = 0; i < (int)Math.Sqrt(Grid.Length); i++)
+            for (int x = 0; x < (int)Math.Sqrt(Grid.Length); x++)
             {
-                for (int j = 0; j < (int)Math.Sqrt(Grid.Length); j++)
+                for (int y = 0; y < (int)Math.Sqrt(Grid.Length); y++)
                 {
-                    Grid.SetValue(cellType, i, j);
+                    Grid.SetValue(cellType, x, y);
                 }
             }
         }
@@ -64,15 +64,7 @@
         public bool CanPlaceShip(Ship ship)
         {
             List<Tuple<int, int>> shipCoordinates = ship.GetCoordinates();
-
-            foreach (var coord in shipCoordinates)
-            {
-                if (this.Occupied(coord))
-                {
-                    return false;
-                }
-            }
-            return true;
+            return shipCoordinates.All(coord => !this.Occupied(coord));
         }
 
         public bool Occupied(Tuple<int, int> coord)
@@ -80,15 +72,15 @@
             return this.Occupied(coord.Item1, coord.Item2);
         }
 
-        public bool Occupied(int xCoordinate, int yCoordinate)
+        public bool Occupied(int x, int y)
         {
-            if (!IsOnMap(new Tuple<int, int>(xCoordinate, yCoordinate)))
+            if (!IsOnMap(new Tuple<int, int>(x, y)))
             {
                 return true;
             }
             else
             {
-                return (Grid[xCoordinate, yCoordinate] != CellType.Water && Grid[xCoordinate, yCoordinate] != CellType.Unknown);
+                return (Grid[x, y] != CellType.Water && Grid[x, y] != CellType.Unknown);
             }
         }
 

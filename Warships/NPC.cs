@@ -24,65 +24,69 @@ namespace Warships
             return whereToShoot;
         }
 
+        public static string StringFromInt(int x)
+        {
+            return x switch
+            {
+                0 => "A",
+                1 => "B",
+                2 => "C",
+                3 => "D",
+                4 => "E",
+                5 => "F",
+                6 => "G",
+                7 => "H",
+                8 => "I",
+                _ => "J",
+            };
+        }
         public static string StringFromCoordinates(Tuple<int, int> whereToShoot)
         {
-            return whereToShoot.Item1 switch
-            {
-                0 => "a" + whereToShoot.Item2,
-                1 => "b" + whereToShoot.Item2,
-                2 => "c" + whereToShoot.Item2,
-                3 => "d" + whereToShoot.Item2,
-                4 => "e" + whereToShoot.Item2,
-                5 => "f" + whereToShoot.Item2,
-                6 => "g" + whereToShoot.Item2,
-                7 => "h" + whereToShoot.Item2,
-                8 => "i" + whereToShoot.Item2,
-                _ => "j" + whereToShoot.Item2,
-            };
+            return StringFromInt(whereToShoot.Item1) + whereToShoot.Item2;
         }
 
         private static Tuple<int, int> ChooseWhereToShoot(Map enemyMap)
         {
             Random r = new();
-            int size = enemyMap.Grid.GetLength(0);
-            double[,] weight = new double[size, size];
+            int mapSize = enemyMap.Grid.GetLength(0);
+            double[,] weight = new double[mapSize, mapSize];
 
-            for (int j = 0; j < size; j++)
+            for (int y = 0; y < mapSize; y++)
             {
-                for (int i = 0; i < size; i++)
+                for (int x = 0; x < mapSize; x++)
                 {
-                    weight[i, j] = r.NextDouble();//fill with random small numbers, so they are not equal but negligable
+                    weight[x, y] = r.NextDouble();//fill with random small numbers, so they are not equal but negligable
                 }
             }
-            for (int j = 0; j < size; j++)
+            for (int y = 0; y < mapSize; y++)
             {
-                for (int i = 0; i < size; i++)
+                for (int x = 0; x < mapSize; x++)
                 {
-                    switch (enemyMap.Grid[i, j])
+                    switch (enemyMap.Grid[x, y])
                     {
                         case CellType.Unknown:
-                            weight[i, j] += 1;
+                            weight[x, y] += 1;
                             break;
 
                         case CellType.Hit:
-                            weight[i, j] -= 999;
-                            weight = ChangeNeighbouring(weight, i, j, +50);
-                            PredictLines(enemyMap, weight, i, j);
+                            weight[x, y] -= 999;
+                            weight = ChangeNeighbouring(weight, x, y, +50);
+                            PredictLines(enemyMap, weight, x, y);
                             break;
 
                         case CellType.Ship://how would he know?
-                            weight[i, j] += 999;
-                            weight = ChangeNeighbouring(weight, i, j, +50);
+                            weight[x, y] += 999;
+                            weight = ChangeNeighbouring(weight, x, y, +50);
                             break;
 
                         case CellType.Sunken:
-                            weight[i, j] -= 999;
-                            weight = ChangeNeighbouring(weight, i, j, -5);
+                            weight[x, y] -= 999;
+                            weight = ChangeNeighbouring(weight, x, y, -5);
                             break;
 
                         default:
                         case CellType.Water:
-                            weight[i, j] -= 999;
+                            weight[x, y] -= 999;
                             break;
                     }
                 }
@@ -92,23 +96,23 @@ namespace Warships
             return IndexOf(weight, maxValue);
         }
 
-        private static void PredictLines(Map map, double[,] weight, int x, int y)//we know xy was hit
+        private static void PredictLines(Map map, double[,] weight, int hitX, int hitY)//we know xy was hit
         {
             int size = map.Grid.GetLength(0);
             bool endloop = false;//lets me break out of loop inside the switch. ambigous "break" keyword
-            for (int i = x + 1; i < size; i++)
+            for (int x = hitX + 1; x < size; x++)
             {
                 if (endloop)
                 {
                     break;
                 }
-                switch (map.Grid[i, y])
+                switch (map.Grid[x, hitY])
                 {
                     case CellType.Hit:
                         break;
 
                     case CellType.Unknown:
-                        weight[i, y] += 100;
+                        weight[x, hitY] += 100;
                         endloop = true;
                         break;
 
@@ -118,19 +122,19 @@ namespace Warships
                 }
             }
             endloop = false;
-            for (int i = x - 1; i >= 0; i--)
+            for (int x = hitX - 1; x >= 0; x--)
             {
                 if (endloop)
                 {
                     break;
                 }
-                switch (map.Grid[i, y])
+                switch (map.Grid[x, hitY])
                 {
                     case CellType.Hit:
                         break;
 
                     case CellType.Unknown:
-                        weight[i, y] += 100;
+                        weight[x, hitY] += 100;
                         endloop = true;
                         break;
 
@@ -140,19 +144,19 @@ namespace Warships
                 }
             }
             endloop = false;
-            for (int j = y - 1; j >= 0; j--)
+            for (int y = hitY - 1; y >= 0; y--)
             {
                 if (endloop)
                 {
                     break;
                 }
-                switch (map.Grid[x, j])
+                switch (map.Grid[hitX, y])
                 {
                     case CellType.Hit:
                         break;
 
                     case CellType.Unknown:
-                        weight[x, j] += 100;
+                        weight[hitX, y] += 100;
                         endloop = true;
                         break;
 
@@ -162,19 +166,19 @@ namespace Warships
                 }
             }
             endloop = false;
-            for (int j = y + 1; j < size; j++)
+            for (int y = hitY + 1; y < size; y++)
             {
                 if (endloop)
                 {
                     break;
                 }
-                switch (map.Grid[x, j])
+                switch (map.Grid[hitX, y])
                 {
                     case CellType.Hit:
                         break;
 
                     case CellType.Unknown:
-                        weight[x, j] += 100;
+                        weight[hitX, y] += 100;
                         endloop = true;
                         break;
 
@@ -189,13 +193,13 @@ namespace Warships
         {
             int size = array.GetLength(0);
 
-            for (int j = 0; j < size; j++)
+            for (int y = 0; y < size; y++)
             {
-                for (int i = 0; i < size; i++)
+                for (int x = 0; x < size; x++)
                 {
-                    if (array[i, j] == value)
+                    if (array[x, y] == value)
                     {
-                        return new Tuple<int, int>(i, j);
+                        return new Tuple<int, int>(x, y);
                     }
                 }
             }

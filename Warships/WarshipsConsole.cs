@@ -31,8 +31,8 @@ namespace Warships
             string name2 = Console.ReadLine() ?? "Antyfilidor";
             Console.Clear();
 
-            Player p = RunGame(numberOfPlayers, true, name1, name2);
-            Console.WriteLine(p.Name + " won!");
+            Player winner = RunGame(numberOfPlayers, true, name1, name2);
+            Console.WriteLine(winner.Name + " won!");
             Console.ReadLine();
             Console.Clear();
         }
@@ -44,28 +44,49 @@ namespace Warships
             Player p2 = bothPlayers.Item2;
             p1.GenerateFleet();
             p2.GenerateFleet();
-
-            while (p1.FleetStillAlive() && p2.FleetStillAlive())
+            while (BothFleetsAlive(p1, p2))
             {
                 switch (numberOfPlayers)
                 {
                     case 0:
                         PlayAutomaticTurn(p1, p2, showNPC);
+                        if (!BothFleetsAlive(p1, p2))
+                        {
+                            break;
+                        }
                         PlayAutomaticTurn(p2, p1, showNPC);
                         break;
 
                     case 1:
                         PlayOneTurn(p1, p2);
+                        if (!BothFleetsAlive(p1, p2))
+                        {
+                            break;
+                        }
                         PlayAutomaticTurn(p2, p1, showNPC);
                         break;
 
                     case 2:
                     default:
                         PlayOneTurn(p1, p2);
+                        if (!BothFleetsAlive(p1, p2))
+                        {
+                            break;
+                        }
                         PlayOneTurn(p2, p1);
                         break;
                 }
             }
+            return CheckForWinners(p1, p2);
+        }
+
+        private static bool BothFleetsAlive(Player p1, Player p2)
+        {
+            return p1.FleetStillAlive() && p2.FleetStillAlive();
+        }
+
+        private static Player CheckForWinners(Player p1, Player p2)
+        {
             if (p1.FleetStillAlive())
             {
                 return p1;
@@ -173,73 +194,79 @@ namespace Warships
         {
             lastMove ??= new Tuple<int, int>(-1, -1);
             int mapSize = m.Grid.GetLength(0);
-            Console.BackgroundColor = ConsoleColor.White;
-            Console.ForegroundColor = ConsoleColor.Black;
-            Console.WriteLine(" ABCDEFGHIJ");
-            Console.ResetColor();
-            for (int j = 0; j < mapSize; j++)
-            {
-                Console.BackgroundColor = ConsoleColor.White;
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.Write(j);
-                Console.ResetColor();
+            PrintLetterRow(lastMove.Item1, mapSize);
 
-                for (int i = 0; i < mapSize; i++)
+            for (int y = 0; y < mapSize; y++)
+            {
+                bool highlight = false;
+                if (lastMove.Item2 == y)
                 {
-                    switch (m.Grid[i, j])
+                    highlight = true;
+                }
+                PrintOnMap(highlight, y.ToString(), ConsoleColor.Black, ConsoleColor.White);
+
+                for (int x = 0; x < mapSize; x++)
+                {
+                    highlight = false;
+                    if (lastMove.Item1 == x && lastMove.Item2 == y)
+                    {
+                        highlight = true;
+                    }
+
+                    switch (m.Grid[x, y])
                     {
                         case CellType.Unknown:
-                            Console.Write("?");
+                            PrintOnMap(highlight, "?", ConsoleColor.White);
                             break;
 
                         case CellType.Water:
-                            Console.BackgroundColor = ConsoleColor.Cyan;
-                            Console.ForegroundColor = ConsoleColor.DarkBlue;
-                            if (lastMove.Item1 == i && lastMove.Item2 == j)
-                            {
-                                Console.BackgroundColor = ConsoleColor.Yellow;
-                            }
-                            Console.Write("~");
-                            Console.ResetColor();
+                            PrintOnMap(highlight);
                             break;
 
                         case CellType.Ship:
-                            Console.BackgroundColor = ConsoleColor.Cyan;
-                            Console.ForegroundColor = ConsoleColor.DarkYellow;
-                            if (lastMove.Item1 == i && lastMove.Item2 == j)
-                            {
-                                Console.BackgroundColor = ConsoleColor.Yellow;
-                            }
-                            Console.Write("O");
-                            Console.ResetColor();
+                            PrintOnMap(highlight, "#", ConsoleColor.DarkYellow);
                             break;
 
                         case CellType.Hit:
-                            Console.BackgroundColor = ConsoleColor.Cyan;
-                            Console.ForegroundColor = ConsoleColor.DarkRed;
-                            if (lastMove.Item1 == i && lastMove.Item2 == j)
-                            {
-                                Console.BackgroundColor = ConsoleColor.Yellow;
-                            }
-                            Console.Write("*");
-                            Console.ResetColor();
+                            PrintOnMap(highlight, "*", ConsoleColor.DarkRed);
                             break;
 
                         case CellType.Sunken:
-                            Console.BackgroundColor = ConsoleColor.Cyan;
-                            Console.ForegroundColor = ConsoleColor.DarkRed;
-                            if (lastMove.Item1 == i && lastMove.Item2 == j)
-                            {
-                                Console.BackgroundColor = ConsoleColor.Yellow;
-                            }
-                            Console.Write("X");
-                            Console.ResetColor();
+                            PrintOnMap(highlight, "X", ConsoleColor.DarkRed);
                             break;
                     }
                 }
                 Console.WriteLine();
             }
             Console.WriteLine("\n\n");
+        }
+
+        private static void PrintLetterRow(int mapSize, int lastMove)
+        {
+            bool highlight = false;
+            PrintOnMap(false, " ", ConsoleColor.Black, ConsoleColor.White);
+            for (int x = 0; x < mapSize; x++)
+            {
+                if (lastMove == x)
+                {
+                    highlight = true;
+                }
+                PrintOnMap(highlight, StringFromInt(x), ConsoleColor.Black, ConsoleColor.White);
+                highlight = false;
+            }
+            Console.WriteLine("");
+        }
+
+        private static void PrintOnMap(bool highlight = false, string character = "~", ConsoleColor foregroundColor = ConsoleColor.DarkBlue, ConsoleColor backgroundColor = ConsoleColor.DarkCyan)
+        {
+            Console.BackgroundColor = backgroundColor;
+            Console.ForegroundColor = foregroundColor;
+            if (highlight)
+            {
+                Console.BackgroundColor = ConsoleColor.Yellow;
+            }
+            Console.Write(character);
+            Console.ResetColor();
         }
     }
 }

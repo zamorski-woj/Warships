@@ -5,7 +5,7 @@
         public int Length { get; set; }
         public Direction Heading { get; set; }
         public Tuple<int, int> MainCoordinate { get; set; }
-        public bool sunken { get; set; } = false;
+        public bool Sunken { get; set; } = false;
 
         public Ship(int length, Direction heading, Tuple<int, int> mainCoordinate)//manually
         {
@@ -58,35 +58,30 @@
             {
                 map.Grid[coordinate.Item1, coordinate.Item2] = CellType.Sunken;
             }
-            this.sunken = true;
+            this.Sunken = true;
         }
 
         internal bool ExistsHere(Tuple<int, int> where)
         {
             var coordinates = GetCoordinates();
-            foreach (var coordinate in coordinates)
-            {
-                if (coordinate.Item1 == where.Item1 && coordinate.Item2 == where.Item2)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return coordinates.Any(coordinate => coordinate.Item1 == where.Item1 && coordinate.Item2 == where.Item2);
         }
 
         internal CellType CheckIfSunken(Map map)
         {
             var coordinates = GetCoordinates();
-            foreach (var coordinate in coordinates)
+            if (IsAnyCellAlive(map, coordinates))
             {
-                if (map.Grid[coordinate.Item1, coordinate.Item2] == CellType.Ship)
-                {
-                    return CellType.Hit;//that means it is alive
-                }
+                return CellType.Hit;//alive
             }
             this.Destroy(map);
             this.Destroy(map.Owner.Opponent.EnemyMap);
             return CellType.Sunken;//He`s dead, Jim.
+        }
+
+        internal static bool IsAnyCellAlive(Map map, List<Tuple<int, int>> coordinates)
+        {
+            return coordinates.Any(coordinate => map.Grid[coordinate.Item1, coordinate.Item2] == CellType.Ship);
         }
     }
 }

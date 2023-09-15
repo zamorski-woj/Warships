@@ -36,26 +36,12 @@ namespace Warships
 
         public Ship? GetShipFromCoordinates(Tuple<int, int> where)
         {
-            foreach (var ship in Fleet)
-            {
-                if (ship.ExistsHere(where))
-                {
-                    return ship;
-                }
-            }
-            return null;
+            return Fleet.FirstOrDefault(ship => ship.ExistsHere(where));
         }
 
         public bool FleetStillAlive()
         {
-            foreach (Ship s in Fleet)
-            {
-                if (s.sunken == false)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return Fleet.Any(ship => ship.Sunken == false);
         }
     }
 }

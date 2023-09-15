@@ -107,8 +107,8 @@
 
             do
             {
-                xCoordinate = random.Next(0, (int)Math.Sqrt(map.Grid.Length));
-                yCoordinate = random.Next(0, (int)Math.Sqrt(map.Grid.Length));
+                xCoordinate = random.Next(0, map.Grid.GetLength(0));
+                yCoordinate = random.Next(0, map.Grid.GetLength(1));
                 direction = (Direction)random.Next(0, 4);
             }
             while (!map.CanPlaceShip(xCoordinate, yCoordinate, direction, length));

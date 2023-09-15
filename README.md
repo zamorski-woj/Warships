@@ -19,7 +19,7 @@
 	- Po dwa 2-masztowce
 - Znaki pojawiające się podczas rozgrywki:
 	- `?` Nieznana zawartość pola
-	- `O` Nieuszkodzony segment statku
+	- `#` Nieuszkodzony segment statku
 	- `*` Trafiony segment statku
 	- `X` Trafiony i zatopiony segment statku
 	- `~` Woda (puste pole)

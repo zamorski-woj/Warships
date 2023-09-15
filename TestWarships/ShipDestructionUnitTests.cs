@@ -47,7 +47,7 @@ namespace TestWarships
             {
                 map.Grid[c.Item1, c.Item2].Should().Be(CellType.Sunken);
             }
-            ship.sunken.Should().BeTrue();
+            ship.Sunken.Should().BeTrue();
         }
 
         [Theory]
@@ -90,7 +90,7 @@ namespace TestWarships
                     map.Grid[c.Item1, c.Item2].Should().Be(CellType.Hit);
                 }
             }
-            ship.sunken.Should().BeFalse();
+            ship.Sunken.Should().BeFalse();
         }
     }
 }
