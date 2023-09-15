@@ -37,7 +37,7 @@ namespace Warships
             Console.Clear();
         }
 
-        public static Player RunGame(int numberOfPlayers, bool showNPC = true, string name1 = "Ewaryst", string name2 = "Antyfilidor")
+        public static Player RunGame(int numberOfPlayers, bool showNPCsTurn = true, string name1 = "Ewaryst", string name2 = "Antyfilidor")
         {
             Tuple<Player, Player> bothPlayers = CreateTwoPlayers(name1, name2, 10);
             Player p1 = bothPlayers.Item1;
@@ -49,21 +49,21 @@ namespace Warships
                 switch (numberOfPlayers)
                 {
                     case 0:
-                        PlayAutomaticTurn(p1, p2, showNPC);
+                        PlayAutomaticTurn(p1, p2, showNPCsTurn);
                         if (!BothFleetsAlive(p1, p2))
                         {
                             break;
                         }
-                        PlayAutomaticTurn(p2, p1, showNPC);
+                        PlayAutomaticTurn(p2, p1, showNPCsTurn);
                         break;
 
                     case 1:
-                        PlayOneTurn(p1, p2);
+                        PlayOneTurn(p1, p2, false);
                         if (!BothFleetsAlive(p1, p2))
                         {
                             break;
                         }
-                        PlayAutomaticTurn(p2, p1, showNPC);
+                        PlayAutomaticTurn(p2, p1, false);
                         break;
 
                     case 2:
@@ -97,30 +97,51 @@ namespace Warships
             }
         }
 
-        private static void PlayOneTurn(Player player, Player opponent)
+        private static void PlayOneTurn(Player player, Player opponent, bool introduce = true)
+        {
+            if (introduce)
+            {
+                Console.Clear();
+                Console.WriteLine(player.Name + "'s turn. Press any Key");
+                Console.ReadKey();
+            }
+
+            Tuple<int, int> whereToShoot = GetOrders(player);
+            CellType outcome = Shoot(opponent.Map, whereToShoot);
+            player.LastMove = whereToShoot;
+            player.LastOutcome = outcome;
+            player.EnemyMap.PlotOutcome(whereToShoot, outcome);
+            SumUpTurn(player, outcome);
+        }
+
+        private static void SumUpTurn(Player player, CellType outcome)
         {
             Console.Clear();
-            Console.WriteLine(player.Name + "'s turn. Press any Key");
+            ShowBothMaps(player);
+            Console.WriteLine(OutcomeToString(outcome));
+            Console.WriteLine("");
+            Console.WriteLine("Press a key to change turn");
             Console.ReadKey();
+        }
 
+        private static Tuple<int, int> GetOrders(Player player)
+        {
             string? order = null;
             while (order == null || NotValidOrder(order))
             {
                 Console.Clear();
+
+                if (player.Opponent.LastMove != null)
+                {
+                    Console.WriteLine("Admiral " + player.Opponent.Name + " shooted at " + StringFromCoordinates(player.Opponent.LastMove));
+                    Console.WriteLine(OutcomeToString(player.Opponent.LastOutcome));
+                }
+
                 ShowBothMaps(player);
                 Console.WriteLine("Your orders, Admiral " + player.Name + "?");
                 order = Console.ReadLine();
             }
-            Tuple<int, int> whereToShoot = CoordinatesFromString(order);
-            CellType outcome = Shoot(opponent.Map, whereToShoot);
-            player.LastMove = whereToShoot;
-            player.EnemyMap.PlotOutcome(whereToShoot, outcome);
-            Console.Clear();
-            ShowBothMaps(player);
-            Console.WriteLine(OutcomeToString(outcome));
-
-            Console.WriteLine("Press any key");
-            Console.ReadKey();
+            return CoordinatesFromString(order);
         }
 
         public static string OutcomeToString(CellType outcome)
@@ -183,10 +204,10 @@ namespace Warships
 
         private static void ShowBothMaps(Player p)
         {
-            Console.WriteLine("Your map");
+            Console.WriteLine();
+            Console.WriteLine("Your ships");
             ShowMap(p.Map, p.Opponent.LastMove);
-
-            Console.WriteLine("Enemy map");
+            Console.WriteLine("Enemy ships");
             ShowMap(p.EnemyMap, p.LastMove);
         }
 
@@ -194,7 +215,7 @@ namespace Warships
         {
             lastMove ??= new Tuple<int, int>(-1, -1);
             int mapSize = m.Grid.GetLength(0);
-            PrintLetterRow(lastMove.Item1, mapSize);
+            PrintLetterRow(mapSize, lastMove.Item1);
 
             for (int y = 0; y < mapSize; y++)
             {
@@ -224,7 +245,7 @@ namespace Warships
                             break;
 
                         case CellType.Ship:
-                            PrintOnMap(highlight, "#", ConsoleColor.DarkYellow);
+                            PrintOnMap(highlight, "#", ConsoleColor.Black);
                             break;
 
                         case CellType.Hit:
@@ -238,7 +259,7 @@ namespace Warships
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine("\n\n");
+            Console.WriteLine();
         }
 
         private static void PrintLetterRow(int mapSize, int lastMove)
@@ -255,6 +276,7 @@ namespace Warships
                 highlight = false;
             }
             Console.WriteLine("");
+            Console.ResetColor();
         }
 
         private static void PrintOnMap(bool highlight = false, string character = "~", ConsoleColor foregroundColor = ConsoleColor.DarkBlue, ConsoleColor backgroundColor = ConsoleColor.DarkCyan)
@@ -263,7 +285,7 @@ namespace Warships
             Console.ForegroundColor = foregroundColor;
             if (highlight)
             {
-                Console.BackgroundColor = ConsoleColor.Yellow;
+                Console.BackgroundColor = ConsoleColor.DarkYellow;
             }
             Console.Write(character);
             Console.ResetColor();

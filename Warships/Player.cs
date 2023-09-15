@@ -10,6 +10,7 @@ namespace Warships
         public Map EnemyMap { get; set; }
         public Player Opponent { get; set; }
         public Tuple<int, int>? LastMove { get; set; }
+        public CellType LastOutcome { get; internal set; }
 
         public Player()
         {

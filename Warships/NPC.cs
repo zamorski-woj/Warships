@@ -11,12 +11,14 @@ namespace Warships
             CellType outcome = Shoot(opponent.Map, whereToShoot);
             player.EnemyMap.PlotOutcome(whereToShoot, outcome);
             player.LastMove = whereToShoot;
+            player.LastOutcome = outcome;
 
             if (showNPC)
             {
                 Console.Clear();
                 Console.WriteLine("Admiral " + player.Name + " shoots at " + StringFromCoordinates(whereToShoot));
                 Console.WriteLine(OutcomeToString(outcome));
+                Console.WriteLine();
                 ShowMap(player.EnemyMap, whereToShoot);
                 Console.ReadKey();
                 Console.Clear();
@@ -40,6 +42,7 @@ namespace Warships
                 _ => "J",
             };
         }
+
         public static string StringFromCoordinates(Tuple<int, int> whereToShoot)
         {
             return StringFromInt(whereToShoot.Item1) + whereToShoot.Item2;
